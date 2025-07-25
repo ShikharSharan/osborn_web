@@ -1,0 +1,164 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    background: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px 0;
+}
+
+header {
+    background: #004080;
+    color: white;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+nav .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav .nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav .nav-links li a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    text-align: center;
+    background: #007bff;
+    color: white;
+    padding: 60px 20px;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    display: inline-block;
+    margin-top: 20px;
+    background: #004080;
+    color: white;
+    padding: 10px 25px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.btn-primary:hover {
+    background: #002d59;
+}
+
+.why-choose-us h2,
+.locations h2,
+.providers-search h2,
+.faq-preview h2 {
+    margin-top: 40px;
+    text-align: center;
+    color: #004080;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    flex: 1 1 30%;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    min-width: 250px;
+}
+
+.locations iframe {
+    margin-top: 15px;
+    border-radius: 6px;
+}
+
+.providers-search form {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.providers-search input[type="text"] {
+    width: 60%;
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #ccc;
+}
+
+.providers-search button {
+    padding: 8px 15px;
+    font-size: 1rem;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #004080;
+    background: #004080;
+    color: white;
+    cursor: pointer;
+}
+
+.providers-search button:hover {
+    background: #002d59;
+}
+
+footer {
+    background: #004080;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input,
+form select {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    background: #007bff;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #0056b3;
+}

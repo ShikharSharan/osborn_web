@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
+
+{% block content %}
+<h1>Book an Appointment</h1>
+<p>This form will allow patients to request appointments. (Demo placeholder)</p>
+<form>
+    <label for="name">Name:</label><br>
+    <input id="name" name="name" type="text" required><br><br>
+
+    <label for="email">Email:</label><br>
+    <input id="email" name="email" type="email" required><br><br>
+
+    <label for="date">Preferred Date:</label><br>
+    <input id="date" name="date" type="date" required><br><br>
+
+    <label for="service">Service Needed:</label><br>
+    <select id="service" name="service" required>
+        <option value="">--Select--</option>
+        <option>General Consultation</option>
+        <option>Specialist Visit</option>
+        <option>Lab Tests</option>
+    </select><br><br>
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

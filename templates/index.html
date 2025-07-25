@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Welcome to Osborn Clinic</h1>
+    <p>Your health, our priority.</p>
+    <a href="/appointment" class="btn-primary">Book an Appointment</a>
+</section>
+
+<section class="why-choose-us">
+    <h2>Why Choose Osborn Clinic</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Patient-Centered Care</h3>
+            <p>Personalized treatment plans tailored to your needs.</p>
+        </div>
+        <div class="card">
+            <h3>Experienced Providers</h3>
+            <p>Our team includes board-certified doctors with decades of experience.</p>
+        </div>
+        <div class="card">
+            <h3>Advanced Facilities</h3>
+            <p>State-of-the-art equipment and comfortable clinic environment.</p>
+        </div>
+    </div>
+</section>
+
+<section class="locations">
+    <h2>Locations & Directions</h2>
+    <p>Find us at 123 Osborn Street, Your City, State.</p>
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.08682980840!2d-122.40135048468245!3d37.793617779756444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858069943fe82d%3A0x9a3fed6016d63f48!2sCleveland%20Clinic!5e0!3m2!1sen!2sus!4v1660729492481!5m2!1sen!2sus"
+      width="100%"
+      height="250"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"></iframe>
+</section>
+
+<section class="providers-search">
+    <h2>Find a Provider</h2>
+    <form action="/providers" method="get">
+        <input type="text" name="q" placeholder="Search by name, specialty, or location" />
+        <button type="submit">Search</button>
+    </form>
+</section>
+
+<section class="faq-preview">
+    <h2>Have Questions?</h2>
+    <p>Visit our <a href="/faq">Help/FAQ</a> section for answers to common questions.</p>
+</section>
+{% endblock %}
