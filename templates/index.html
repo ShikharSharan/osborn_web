@@ -4,51 +4,78 @@
 
 {% block content %}
 <section class="hero">
-    <h1>Welcome to Osborn Clinic</h1>
-    <p>Your health, our priority.</p>
+    <h1>Welcome to Osborn Healthcare</h1>
+    <p class="hero-subtitle">Quality healthcare for you and your family.</p>
     <a href="/appointment" class="btn-primary">Book an Appointment</a>
 </section>
 
 <section class="why-choose-us">
-    <h2>Why Choose Osborn Clinic</h2>
+    <h2>Why Choose Osborn Healthcare?</h2>
     <div class="cards">
         <div class="card">
-            <h3>Patient-Centered Care</h3>
-            <p>Personalized treatment plans tailored to your needs.</p>
+            <h3>Personalized Care</h3>
+            <p>Personal care and safe treatment for you and your family.</p>
         </div>
         <div class="card">
-            <h3>Experienced Providers</h3>
-            <p>Our team includes board-certified doctors with decades of experience.</p>
+            <h3>Expert Team</h3>
+            <p>Specialist doctors and nursing staff, united as one team for your health.</p>
         </div>
         <div class="card">
-            <h3>Advanced Facilities</h3>
-            <p>State-of-the-art equipment and comfortable clinic environment.</p>
+            <h3>Modern Facilities</h3>
+            <p>State-of-the-art diagnostic and treatment technologies in a comfortable setting.</p>
         </div>
     </div>
 </section>
 
+<section class="services-overview">
+    <h2>Our Services</h2>
+    <ul class="service-list">
+        <li>General Medicine & Family Care</li>
+        <li>Specialist Consultations (Pediatrics, Dermatology, etc.)</li>
+        <li>Lab Tests & Diagnostics</li>
+        <li>Preventive Health Checkups</li>
+        <li>Telemedicine / Virtual Visits</li>
+    </ul>
+    <a href="/providers" class="btn-link">Meet Our Doctors &raquo;</a>
+</section>
+
 <section class="locations">
-    <h2>Locations & Directions</h2>
-    <p>Find us at 123 Osborn Street, Your City, State.</p>
+    <h2>Location &amp; Directions</h2>
+    <p><strong>Visit us:</strong> Osborn Clinic, Nehru Complex, Shop No. 50,
+        Near SBI Bank, Bargadwa Nakaha Road, Vikas Nagar, Gorakhpur 273007
+    </p>
+
     <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.08682980840!2d-122.40135048468245!3d37.793617779756444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858069943fe82d%3A0x9a3fed6016d63f48!2sCleveland%20Clinic!5e0!3m2!1sen!2sus!4v1660729492481!5m2!1sen!2sus"
+      src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1588.126372110541!2d83.35646060911094!3d26.80472274187001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDQ4JzIwLjAiTiA4M8KwMjEnMjMuMSJF!5e0!3m2!1sen!2sin!4v1765049098606!5m2!1sen!2sin" 
       width="100%"
-      height="250"
-      style="border:0;"
+      height="220"
+      style="border:0; border-radius:6px;"
       allowfullscreen=""
-      loading="lazy"></iframe>
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
 </section>
 
-<section class="providers-search">
-    <h2>Find a Provider</h2>
-    <form action="/providers" method="get">
-        <input type="text" name="q" placeholder="Search by name, specialty, or location" />
-        <button type="submit">Search</button>
-    </form>
+
+<section class="quick-links">
+    <h2>Patient Tools & Resources</h2>
+    <div class="quick-cards">
+        <a href="/appointment" class="quick-link-card">Online Appointment</a>
+        <a href="/faq" class="quick-link-card">FAQ & Help</a>
+        <a href="/resources" class="quick-link-card">Patient Resources</a>
+        <a href="/contact" class="quick-link-card">Contact Us</a>
+    </div>
 </section>
 
-<section class="faq-preview">
-    <h2>Have Questions?</h2>
-    <p>Visit our <a href="/faq">Help/FAQ</a> section for answers to common questions.</p>
+<section class="testimonials" style="margin-top:40px;">
+    <h2>What Our Patients Say</h2>
+    <blockquote>
+        “Osborn Healthcare takes care of my whole family—they are thorough, friendly, and truly care.”<br>
+        <span style="font-size:0.95em;">– Priya S.</span>
+    </blockquote>
+    <blockquote>
+        “Professional doctors and modern facilities. Highly recommend for both routine and specialized care.”<br>
+        <span style="font-size:0.95em;">– Rajiv M.</span>
+    </blockquote>
 </section>
 {% endblock %}

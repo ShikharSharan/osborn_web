@@ -1,9 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Providers{% endblock %}
-
+{% block title %}Our Providers{% endblock %}
 {% block content %}
-<h1>Provider Search Results</h1>
-<p>You searched for: <strong>{{ query }}</strong></p>
-<p>Feature coming soon! Contact us for help finding a provider.</p>
-<a href="/">Back to Home</a>
+<h1>Our Healthcare Providers</h1>
+<p>Meet our team of highly qualified, compassionate, and dedicated healthcare professionals at Osborn Healthcare.</p>
+<div class="provider-cards">
+  <div class="provider-card">
+    <img src="{{ url_for('static', filename='doctors/download.jpeg') }}" alt="Dr. John Smith">
+    <h2>Dr. Deepak Chandra Srivastava, MD Kidney Specialist in Gorakhpur</h2>
+    <h4>Internal Medicine</h4>
+    <p>10+ years of experience .</p>
+    <p><strong>Education:</strong> MBBS.MD, MS</p>
+  </div>
+  <div class="provider-card">
+    <img src="{{ url_for('static', filename='doctors/dr-patel.jpg') }}" alt="Dr. Anita Patel">
+    <h2>Dr. Anita Patel, MD</h2>
+    <h4>Pediatrics</h4>
+    <p>Dedicated to child health and wellness, specializing in immunization and developmental care.</p>
+    <p><strong>Education:</strong> MD (Pediatrics), PGI Chandigarh</p>
+  </div>
+  <!-- Add more doctor cards as needed -->
+</div>
 {% endblock %}
