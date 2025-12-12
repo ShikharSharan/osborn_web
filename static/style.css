@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0; padding: 0;
     background: #f8f9fa;
-    color: #333;
+    color: #3AA9A8;
 }
 
 .container {
@@ -13,7 +13,7 @@ body {
 }
 
 header {
-    background: #004080;
+    background: #3AA9A8;
     color: white;
 }
 
@@ -23,12 +23,23 @@ nav .container {
     align-items: center;
 }
 
+
+
 nav .logo {
+    display: flex;              /* put logo image + text in one row */
+    align-items: center;        /* vertically center them */
+    gap: 10px;                  /* space between image and text */
     font-size: 1.5rem;
     font-weight: bold;
     text-decoration: none;
     color: white;
+    white-space: nowrap;        /* prevent the text from wrapping */
 }
+
+nav .logo img {
+    height: 40px;
+}
+
 
 nav .nav-links {
     list-style: none;
@@ -46,18 +57,12 @@ nav .nav-links li a:hover {
     text-decoration: underline;
 }
 
-.hero {
-    text-align: center;
-    background: #007bff;
-    color: white;
-    padding: 60px 20px;
-    border-radius: 8px;
-}
+
 
 .btn-primary {
     display: inline-block;
     margin-top: 20px;
-    background: #004080;
+    background: #3AA9A8;
     color: white;
     padding: 10px 25px;
     font-weight: bold;
@@ -66,7 +71,7 @@ nav .nav-links li a:hover {
 }
 
 .btn-primary:hover {
-    background: #002d59;
+    background: #3AA9A8;
 }
 
 .why-choose-us h2,
@@ -75,7 +80,7 @@ nav .nav-links li a:hover {
 .faq-preview h2 {
     margin-top: 40px;
     text-align: center;
-    color: #004080;
+    color: #3AA9A8;
 }
 
 .cards {
@@ -91,19 +96,22 @@ nav .nav-links li a:hover {
     flex: 1 1 30%;
     padding: 20px;
     border-radius: 6px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    box-shadow: 0 0 8px #3AA9A8;
     min-width: 250px;
 }
 
+
+.locations {
+  margin-top: 40px;
+  text-align: center;
+}
 .locations iframe {
-    margin-top: 15px;
-    border-radius: 6px;
+  margin-top: 15px;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
 }
 
-.providers-search form {
-    text-align: center;
-    margin-top: 15px;
-}
 
 .providers-search input[type="text"] {
     width: 60%;
@@ -118,17 +126,17 @@ nav .nav-links li a:hover {
     font-size: 1rem;
     border-radius: 0 4px 4px 0;
     border: 1px solid #004080;
-    background: #004080;
+    background: #3AA9A8;
     color: white;
     cursor: pointer;
 }
 
 .providers-search button:hover {
-    background: #002d59;
+    background: #3AA9A8
 }
 
 footer {
-    background: #004080;
+    background: #3AA9A8;
     color: white;
     padding: 15px 0;
     text-align: center;
@@ -151,7 +159,7 @@ form select {
 }
 
 form button {
-    background: #007bff;
+    background: #3AA9A8;
     color: white;
     padding: 10px 25px;
     border: none;
@@ -160,5 +168,17 @@ form button {
 }
 
 form button:hover {
-    background: #0056b3;
+    background: #3AA9A8;
 }
+
+.hero {
+    text-align: center;
+    color: white;
+    padding: 60px 20px;
+    border-radius: 8px;
+
+    background:
+        linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),  /* soft dark overlay */
+        url("hero.jpeg") center/cover no-repeat;        /* image in /static */
+}
+
