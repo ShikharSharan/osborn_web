@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#version: 3.10
+#version: 3.11
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
