@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+{% if post %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.summary }}</p>
+{% for paragraph in post.content %}
+<p>{{ paragraph }}</p>
+{% endfor %}
+{% else %}
+<h1>Article not found</h1>
+<p>The requested blog article does not exist.</p>
+{% endif %}
+{% endblock %}

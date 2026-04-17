@@ -3,8 +3,8 @@
 {% block content %}
 <h1>Patient Resources</h1>
 <ul>
-  <li><a href="/blog/healthy-eating">Healthy Eating for a Better Life</a></li>
-  <li><a href="/blog/stress-management">Stress Management Techniques</a></li>
-  <li><a href="/blog/preventive-care">Importance of Preventive Care</a></li>
+  {% for slug, post in posts.items %}
+  <li><a href="{% url 'blog_detail' slug=slug %}">{{ post.title }}</a></li>
+  {% endfor %}
 </ul>
 {% endblock %}

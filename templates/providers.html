@@ -1,18 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Our Providers{% endblock %}
 {% block content %}
 <h1>Our Healthcare Providers</h1>
 <p>Meet our team of highly qualified, compassionate, and dedicated healthcare professionals at Osborn Healthcare.</p>
 <div class="provider-cards">
   <div class="provider-card">
-    <img src="{{ url_for('static', filename='doctors/download.jpeg') }}" alt="Dr. John Smith">
+    <img src="{% static 'doctors/download.jpeg' %}" alt="Dr. Deepak Chandra Srivastava">
     <h2>Dr. Deepak Chandra Srivastava, MD Kidney Specialist in Gorakhpur</h2>
     <h4>Internal Medicine</h4>
     <p>10+ years of experience .</p>
     <p><strong>Education:</strong> MBBS.MD, MS</p>
   </div>
   <div class="provider-card">
-    <img src="{{ url_for('static', filename='doctors/dr-patel.jpg') }}" alt="Dr. Anita Patel">
     <h2>Dr. Anita Patel, MD</h2>
     <h4>Pediatrics</h4>
     <p>Dedicated to child health and wellness, specializing in immunization and developmental care.</p>

@@ -2,5 +2,10 @@
 {% block title %}Clinic Blog{% endblock %}
 {% block content %}
 <h1>Clinic Blog</h1>
-<p>Coming soon: Articles on health, wellness, news, and more from our Osborn Healthcare team.</p>
+<p>Articles on health, wellness, and preventive care from our Osborn Healthcare team.</p>
+<ul>
+  {% for slug, post in posts.items %}
+  <li><a href="{% url 'blog_detail' slug=slug %}">{{ post.title }}</a> - {{ post.summary }}</li>
+  {% endfor %}
+</ul>
 {% endblock %}

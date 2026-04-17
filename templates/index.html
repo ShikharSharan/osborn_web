@@ -5,12 +5,37 @@
 {% block content %}
 <section class="hero">
     <h1>Welcome to Osborn Healthcare</h1>
-    <p class="hero-subtitle">Quality healthcare for you and your family.</p>
-    <a href="/appointment" class="btn-primary">Book an Appointment</a>
+    <p class="hero-subtitle">Quality healthcare for you and your family, delivered with compassion and modern expertise.</p>
+    <div class="hero-actions">
+        <a href="{% url 'appointment' %}" class="btn-primary">Book an Appointment</a>
+        <a href="{% url 'providers' %}" class="btn-secondary">Meet Our Doctors</a>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span>24/7</span>
+            <p>Emergency support and patient care whenever you need it.</p>
+        </div>
+        <div class="stat-card">
+            <span>1000+</span>
+            <p>Patients trusted Osborn Healthcare for treatment and follow-up.</p>
+        </div>
+        <div class="stat-card">
+            <span>20+</span>
+            <p>Specialist doctors in family medicine, pediatrics, dermatology, and more.</p>
+        </div>
+        <div class="stat-card">
+            <span>10 yrs</span>
+            <p>Serving the Gorakhpur community with reliable healthcare services.</p>
+        </div>
+    </div>
 </section>
 
 <section class="why-choose-us">
     <h2>Why Choose Osborn Healthcare?</h2>
+    <p class="section-intro">We combine personalized medical attention with modern diagnostic support so every patient receives the right care, quickly and respectfully.</p>
     <div class="cards">
         <div class="card">
             <h3>Personalized Care</h3>
@@ -36,7 +61,7 @@
         <li>Preventive Health Checkups</li>
         <li>Telemedicine / Virtual Visits</li>
     </ul>
-    <a href="/providers" class="btn-link">Meet Our Doctors &raquo;</a>
+    <a href="{% url 'providers' %}" class="btn-link">Meet Our Doctors &raquo;</a>
 </section>
 
 <section class="locations">
@@ -60,14 +85,14 @@
 <section class="quick-links">
     <h2>Patient Tools & Resources</h2>
     <div class="quick-cards">
-        <a href="/appointment" class="quick-link-card">Online Appointment</a>
-        <a href="/faq" class="quick-link-card">FAQ & Help</a>
-        <a href="/resources" class="quick-link-card">Patient Resources</a>
-        <a href="/contact" class="quick-link-card">Contact Us</a>
+        <a href="{% url 'appointment' %}" class="quick-link-card">Online Appointment</a>
+        <a href="{% url 'faq' %}" class="quick-link-card">FAQ & Help</a>
+        <a href="{% url 'resources' %}" class="quick-link-card">Patient Resources</a>
+        <a href="{% url 'contact' %}" class="quick-link-card">Contact Us</a>
     </div>
 </section>
 
-<section class="testimonials" style="margin-top:40px;">
+<section class="testimonials">
     <h2>What Our Patients Say</h2>
     <blockquote>
         “Osborn Healthcare takes care of my whole family—they are thorough, friendly, and truly care.”<br>
