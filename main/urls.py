@@ -13,4 +13,5 @@ urlpatterns = [
     path("resources", views.resources, name="resources"),
     path("blog", views.blog, name="blog"),
     path("blog/<slug:slug>", views.blog_detail, name="blog_detail"),
+    path("api/saathi-chat", views.saathi_chat, name="saathi_chat"),
 ]

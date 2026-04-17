@@ -10,6 +10,7 @@
     <meta property="og:title" content="Osborn Healthcare - Quality Healthcare Services" />
     <meta property="og:description" content="Book appointments with Dr. Deepak Chandra Srivastava, physician and kidney specialist in Gorakhpur." />
     <meta property="og:type" content="website" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Osborn Healthcare - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'Orborn logo.png' %}">
@@ -48,5 +49,37 @@
 
         </div>
     </footer>
+    <div class="saathi-widget" data-chat-url="{% url 'saathi_chat' %}">
+        <button class="saathi-toggle" type="button" aria-expanded="false" aria-controls="saathi-panel">
+            <span class="saathi-toggle-label">Osborn Saathi</span>
+        </button>
+        <section class="saathi-panel" id="saathi-panel" hidden>
+            <div class="saathi-panel-header">
+                <div>
+                    <p class="saathi-eyebrow">Clinic Assistant</p>
+                    <h2>Osborn Saathi</h2>
+                </div>
+                <button class="saathi-close" type="button" aria-label="Close chat">×</button>
+            </div>
+            <div class="saathi-messages" aria-live="polite">
+                <article class="saathi-message saathi-message-bot">
+                    <p>Namaste, I am Osborn Saathi. I can help with clinic timings, doctor details, services, location, and appointment guidance.</p>
+                </article>
+            </div>
+            <div class="saathi-quick-actions">
+                <button type="button" data-saathi-prompt="What are the clinic timings?">Clinic Timings</button>
+                <button type="button" data-saathi-prompt="What services are available?">Services</button>
+                <button type="button" data-saathi-prompt="How do I book an appointment?">Book Appointment</button>
+                <button type="button" data-saathi-prompt="What is the clinic address?">Location</button>
+            </div>
+            <form class="saathi-form">
+                <label class="saathi-sr-only" for="saathi-input">Ask Osborn Saathi</label>
+                <textarea id="saathi-input" class="saathi-input" rows="1" placeholder="Ask about timings, services, location, or appointments"></textarea>
+                <button class="saathi-send" type="submit">Send</button>
+            </form>
+            <p class="saathi-disclaimer">Osborn Saathi is an informational assistant and not a substitute for medical diagnosis or emergency care.</p>
+        </section>
+    </div>
+    <script src="{% static 'osborn-saathi.js' %}"></script>
 </body>
 </html>

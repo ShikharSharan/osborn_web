@@ -1,6 +1,11 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 from .forms import AppointmentForm, ContactForm
+from .saathi import get_saathi_reply
 
 
 BLOG_POSTS = {
@@ -131,3 +136,25 @@ def blog_detail(request, slug):
     if not post:
         return render(request, "blog_detail.html", {"post": None, "slug": slug}, status=404)
     return render(request, "blog_detail.html", {"post": post, "slug": slug})
+
+
+@require_POST
+def saathi_chat(request):
+    try:
+        payload = json.loads(request.body or "{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid request body."}, status=400)
+
+    message = (payload.get("message") or "").strip()
+    if not message:
+        return JsonResponse({"error": "Message is required."}, status=400)
+
+    history = request.session.get("saathi_history", [])
+    reply = get_saathi_reply(message, history)
+    updated_history = (history + [
+        {"role": "user", "content": message},
+        {"role": "assistant", "content": reply},
+    ])[-8:]
+    request.session["saathi_history"] = updated_history
+
+    return JsonResponse({"reply": reply})

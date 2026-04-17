@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}Osborn Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin-brand.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="osborn-admin-brand">
+    <a href="{% url 'admin:index' %}" class="osborn-admin-logo-wrap">
+        <img src="{% static 'Orborn logo.png' %}" alt="Osborn Healthcare Logo" class="osborn-admin-logo">
+        <span class="osborn-admin-title">Osborn Admin</span>
+    </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import Appointment, Contact
 
+admin.site.site_header = "Osborn Administration"
+admin.site.site_title = "Osborn Admin"
+admin.site.index_title = "Osborn Healthcare Admin Portal"
+
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'phone', 'preferred_date', 'service', 'status', 'created_at']
