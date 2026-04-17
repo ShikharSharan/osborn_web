@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import AppointmentForm, ContactForm
 
 
 BLOG_POSTS = {
@@ -31,9 +33,48 @@ BLOG_POSTS = {
     },
 }
 
+PATIENT_REVIEWS = [
+    {
+        "name": "Chandan Mahto",
+        "meta": "1 review",
+        "time": "4 months ago",
+        "text": "Bahut acche doctor hai. mjhe fever ki wajah se kidney ki paresani thi sath me pilia hua tha, abhi thik hai, puri recovery ho gyi. Doctor sahab Gorakhpur ke best doctor hain.",
+    },
+    {
+        "name": "Pankaj Ravan",
+        "meta": "1 review",
+        "time": "2 months ago",
+        "text": "Dr. Deepak Chandra Shrivastava ek bahut hi acche aur humble doctor hain. Meri problems ko dhyan se suna aur clearly samjhaya. Treatment se mujhe thik kiya.",
+    },
+    {
+        "name": "Dheeraj Kumar",
+        "meta": "1 review",
+        "time": "2 months ago",
+        "text": "Dr Deepak ji bahut acche doctor hain. Inhone meri pareshaniyon ko samjha aur ek achha treatment kiya.",
+    },
+    {
+        "name": "Alok Mishra",
+        "meta": "1 review",
+        "time": "6 months ago",
+        "text": "Doctor sahab ki prashansa shabdon se nahi kiya ja sakta hai. Kyunki jo bhi vyakti ek bar unse milega usko swayam anubhav ho jayega.",
+    },
+    {
+        "name": "Anant Ranjan",
+        "meta": "2 reviews",
+        "time": "2 months ago",
+        "text": "This is a very good facility, the patient got cured from here. Patient name - Asha Devi.",
+    },
+    {
+        "name": "Sagar Singh",
+        "meta": "15 reviews · 3 photos",
+        "time": "A year ago",
+        "text": "Best doctor in my knowledge... great behaviour and staff also very good in nature.",
+    },
+]
+
 
 def home(request):
-    return render(request, "index.html")
+    return render(request, "index.html", {"patient_reviews": PATIENT_REVIEWS})
 
 
 def about(request):
@@ -41,7 +82,17 @@ def about(request):
 
 
 def contact(request):
-    return render(request, "contact.html")
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save()
+            messages.success(request,
+                f"Thank you, {contact.name}! Your message has been received. We'll get back to you at {contact.email} within 24 hours.")
+            return redirect('contact')
+    else:
+        form = ContactForm()
+
+    return render(request, 'contact.html', {'form': form})
 
 
 def providers(request):
@@ -49,21 +100,18 @@ def providers(request):
 
 
 def appointment(request):
-    submitted = request.method == "POST"
-    appointment_data = {
-        "name": request.POST.get("name", "").strip(),
-        "email": request.POST.get("email", "").strip(),
-        "date": request.POST.get("date", "").strip(),
-        "service": request.POST.get("service", "").strip(),
-    }
-    return render(
-        request,
-        "appointment.html",
-        {
-            "submitted": submitted,
-            "appointment_data": appointment_data,
-        },
-    )
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            appointment = form.save()
+            messages.success(request,
+                f"Thank you, {appointment.name}! Your appointment request for {appointment.get_service_display()} "
+                f"on {appointment.preferred_date} has been received. We'll contact you soon at {appointment.email}.")
+            return redirect('appointment')
+    else:
+        form = AppointmentForm()
+
+    return render(request, 'appointment.html', {'form': form})
 
 
 def faq(request):

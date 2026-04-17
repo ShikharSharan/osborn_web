@@ -5,30 +5,30 @@
 {% block content %}
 <section class="hero">
     <h1>Welcome to Osborn Healthcare</h1>
-    <p class="hero-subtitle">Quality healthcare for you and your family, delivered with compassion and modern expertise.</p>
+    <p class="hero-subtitle">Expert MD Medicine and kidney care in Gorakhpur with compassionate consultation, focused diagnosis, and patient-first treatment by Dr. Deepak Chandra Srivastava.</p>
     <div class="hero-actions">
         <a href="{% url 'appointment' %}" class="btn-primary">Book an Appointment</a>
-        <a href="{% url 'providers' %}" class="btn-secondary">Meet Our Doctors</a>
+        <a href="{% url 'providers' %}" class="btn-secondary">Meet Dr. Deepak</a>
     </div>
 </section>
 
 <section class="stats-section">
     <div class="stats-grid">
         <div class="stat-card">
-            <span>24/7</span>
-            <p>Emergency support and patient care whenever you need it.</p>
+            <span>MBBS, MD</span>
+            <p>Advanced training in medicine with fellowship-focused expertise in nephrology.</p>
         </div>
         <div class="stat-card">
-            <span>1000+</span>
-            <p>Patients trusted Osborn Healthcare for treatment and follow-up.</p>
+            <span>AIIMS + Apollo</span>
+            <p>Clinical experience shaped by work at AIIMS Gorakhpur and Apollo Hospital, New Delhi.</p>
         </div>
         <div class="stat-card">
-            <span>20+</span>
-            <p>Specialist doctors in family medicine, pediatrics, dermatology, and more.</p>
+            <span>1</span>
+            <p>Dedicated lead doctor providing focused, personalized care at Osborn Clinic.</p>
         </div>
         <div class="stat-card">
-            <span>10 yrs</span>
-            <p>Serving the Gorakhpur community with reliable healthcare services.</p>
+            <span>100+</span>
+            <p>Successful internal jugular dialysis catheter placements highlighted on the official profile.</p>
         </div>
     </div>
 </section>
@@ -39,15 +39,15 @@
     <div class="cards">
         <div class="card">
             <h3>Personalized Care</h3>
-            <p>Personal care and safe treatment for you and your family.</p>
+            <p>Each patient is evaluated carefully with treatment plans shaped around symptoms, diagnosis, and long-term well-being.</p>
         </div>
         <div class="card">
             <h3>Expert Team</h3>
-            <p>Specialist doctors and nursing staff, united as one team for your health.</p>
+            <p>Dr. Deepak and the clinic support staff work together to guide your care with attention and respect.</p>
         </div>
         <div class="card">
-            <h3>Modern Facilities</h3>
-            <p>State-of-the-art diagnostic and treatment technologies in a comfortable setting.</p>
+            <h3>Specialized Procedures</h3>
+            <p>From renal biopsy to central line insertion and dialysis catheter placement, care is backed by practical procedural expertise.</p>
         </div>
     </div>
 </section>
@@ -55,13 +55,14 @@
 <section class="services-overview">
     <h2>Our Services</h2>
     <ul class="service-list">
-        <li>General Medicine & Family Care</li>
-        <li>Specialist Consultations (Pediatrics, Dermatology, etc.)</li>
-        <li>Lab Tests & Diagnostics</li>
-        <li>Preventive Health Checkups</li>
-        <li>Telemedicine / Virtual Visits</li>
+        <li>Physical examination and physician consultation</li>
+        <li>Dialysis catheter placement including internal jugular, femoral, and permacath access</li>
+        <li>Central line insertion</li>
+        <li>Renal biopsy</li>
+        <li>Lumbar puncture</li>
+        <li>Bone marrow biopsy</li>
     </ul>
-    <a href="{% url 'providers' %}" class="btn-link">Meet Our Doctors &raquo;</a>
+    <a href="{% url 'providers' %}" class="btn-link">Meet Dr. Deepak &raquo;</a>
 </section>
 
 <section class="locations">
@@ -94,13 +95,21 @@
 
 <section class="testimonials">
     <h2>What Our Patients Say</h2>
-    <blockquote>
-        “Osborn Healthcare takes care of my whole family—they are thorough, friendly, and truly care.”<br>
-        <span style="font-size:0.95em;">– Priya S.</span>
-    </blockquote>
-    <blockquote>
-        “Professional doctors and modern facilities. Highly recommend for both routine and specialized care.”<br>
-        <span style="font-size:0.95em;">– Rajiv M.</span>
-    </blockquote>
+    <p class="section-intro">Real feedback from patients and families who trusted Osborn Healthcare for consultation, treatment, and recovery.</p>
+    <div class="review-grid">
+        {% for review in patient_reviews %}
+        <article class="review-card">
+            <div class="review-topline">
+                <div>
+                    <h3>{{ review.name }}</h3>
+                    <p class="review-meta">{{ review.meta }}</p>
+                </div>
+                <p class="review-time">{{ review.time }}</p>
+            </div>
+            <p class="review-stars" aria-label="5 out of 5 stars">★★★★★</p>
+            <p class="review-text">{{ review.text }}</p>
+        </article>
+        {% endfor %}
+    </div>
 </section>
 {% endblock %}

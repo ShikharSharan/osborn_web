@@ -1,23 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Our Providers{% endblock %}
+{% block title %}Our Doctor{% endblock %}
 {% block content %}
-<h1>Our Healthcare Providers</h1>
-<p>Meet our team of highly qualified, compassionate, and dedicated healthcare professionals at Osborn Healthcare.</p>
+<section class="providers-page">
+  <h1>Meet Our Doctor</h1>
+  <p class="providers-intro">Meet Dr. Deepak Chandra Srivastava, MBBS, MD (Medicine), F.I.N. (Nephrology), physician and kidney specialist serving patients at Osborn Clinic in Gorakhpur.</p>
 <div class="provider-cards">
   <div class="provider-card">
     <img src="{% static 'doctors/download.jpeg' %}" alt="Dr. Deepak Chandra Srivastava">
-    <h2>Dr. Deepak Chandra Srivastava, MD Kidney Specialist in Gorakhpur</h2>
-    <h4>Internal Medicine</h4>
-    <p>10+ years of experience .</p>
-    <p><strong>Education:</strong> MBBS.MD, MS</p>
+    <h2>Dr. Deepak Chandra Srivastava</h2>
+    <h4>MD Medicine and Kidney Specialist in Gorakhpur</h4>
+    <p>Dr. Srivastava has a medical background shaped by JNMCH, Aligarh Muslim University, fellowship training in nephrology at Apollo Hospitals, New Delhi, and clinical experience at AIIMS Gorakhpur and Apollo Hospital, New Delhi.</p>
+    <p><strong>Qualifications:</strong> MBBS, MD (Medicine), F.I.N. (Nephrology)</p>
+    <ul class="provider-highlights">
+      <li>Focused on physician care and kidney-related conditions</li>
+      <li>Experienced in renal biopsy, central line insertion, lumbar puncture, and bone marrow biopsy</li>
+      <li>Official profile highlights 100+ successful internal jugular dialysis catheter placements</li>
+      <li>Consultation available at Osborn Clinic, Bargadwa Nakaha Road, Vikas Nagar, Gorakhpur</li>
+    </ul>
+
+    <div class="publication-section">
+      <p class="publication-label">Featured Journal Publication</p>
+      <div class="publication-card">
+        <p class="publication-title">
+          A Study on the Prevalence of HCV Genotypes and the Effect of Direct-Acting Antiviral Therapy on Clinical and Laboratory Parameters in HCV-Infected Patients at a Tertiary Care Center in North India
+        </p>
+        <p class="publication-meta">
+          Indian Journal of Community Medicine, Volume 49, Issue 1, Pages 203-208, Jan-Feb 2024
+        </p>
+        <p class="publication-meta">
+          DOI: <a href="https://doi.org/10.4103/IJCM.IJCM_865_22" target="_blank" rel="noopener noreferrer">10.4103/IJCM.IJCM_865_22</a>
+        </p>
+        <a class="publication-link" href="https://journals.lww.com/ijcm/fulltext/2024/49010/a_study_on_the_prevalence_of_hcv_genotypes_and_the.34.aspx" target="_blank" rel="noopener noreferrer">
+          View Journal Article
+        </a>
+      </div>
+    </div>
+
+    <div class="publication-section">
+      <p class="publication-label">Featured In</p>
+      <div class="feature-links">
+        <a class="feature-card" href="https://theinfluencersofindia.com/2271-2/30/" target="_blank" rel="noopener noreferrer">
+          <span class="feature-source">The Influencers of India</span>
+          <strong>Dr. Deepak Srivastava: Champion of Integrative Medicine</strong>
+        </a>
+        <a class="feature-card" href="https://businessup2date.com/dr-deepak-srivastava-holistic-healthcare-advocate/" target="_blank" rel="noopener noreferrer">
+          <span class="feature-source">Business Up 2 Date</span>
+          <strong>Dr. Deepak Srivastava: Holistic Healthcare Advocate</strong>
+        </a>
+      </div>
+    </div>
+
+    <div class="publication-section">
+      <p class="publication-label">Author Spotlight</p>
+      <div class="book-card">
+        <p class="publication-title">The Habit Revolution: Master Your Habits, Transform Your Destiny</p>
+        <p class="publication-meta">
+          Authored by Dr. Deepak Chandra Srivastava, this book explores how disciplined habits and lifestyle choices can shape long-term health, growth, and personal transformation.
+        </p>
+      </div>
+    </div>
   </div>
-  <div class="provider-card">
-    <h2>Dr. Anita Patel, MD</h2>
-    <h4>Pediatrics</h4>
-    <p>Dedicated to child health and wellness, specializing in immunization and developmental care.</p>
-    <p><strong>Education:</strong> MD (Pediatrics), PGI Chandigarh</p>
-  </div>
-  <!-- Add more doctor cards as needed -->
 </div>
+ </section>
 {% endblock %}

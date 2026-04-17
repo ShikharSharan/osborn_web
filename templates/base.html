@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Osborn Healthcare - Book appointments with Dr. Deepak Chandra Srivastava, MBBS, MD (Medicine), F.I.N. (Nephrology), physician and kidney specialist in Gorakhpur." />
+    <meta name="keywords" content="healthcare, doctor, medical, Gorakhpur, appointment, clinic, Osborn Healthcare" />
+    <meta name="author" content="Osborn Healthcare" />
+    <meta property="og:title" content="Osborn Healthcare - Quality Healthcare Services" />
+    <meta property="og:description" content="Book appointments with Dr. Deepak Chandra Srivastava, physician and kidney specialist in Gorakhpur." />
+    <meta property="og:type" content="website" />
     <title>Osborn Healthcare - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static 'Orborn logo.png' %}">
@@ -20,7 +26,7 @@
                     <ul class="nav-links">
                         <li><a href="{% url 'home' %}">Home</a></li>
                         <li><a href="{% url 'about' %}">About Us</a></li>
-                        <li><a href="{% url 'providers' %}">Doctors</a></li>
+                        <li><a href="{% url 'providers' %}">Doctor</a></li>
                         <li><a href="{% url 'appointment' %}">Book Appointment</a></li>
                         <li><a href="{% url 'resources' %}">Patient Resources</a></li>
                         <li><a href="{% url 'faq' %}">Help/FAQ</a></li>

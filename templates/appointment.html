@@ -2,24 +2,68 @@
 {% block title %}Book Appointment{% endblock %}
 {% block content %}
 <h1>Book an Appointment</h1>
-{% if submitted %}
-<p>Thank you, {{ appointment_data.name|default:"patient" }}. Your appointment request for {{ appointment_data.service|default:"General Consultation" }} on {{ appointment_data.date|default:"your preferred date" }} has been received.</p>
+<p class="appointment-intro">Schedule your visit with Dr. Deepak Chandra Srivastava at Osborn Clinic. Choose the service you need and we will get back to you to confirm your appointment.</p>
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
 {% endif %}
-<form method="post">
+
+<form method="post" class="appointment-form">
   {% csrf_token %}
-  <label for="name">Full Name:</label><br>
-  <input id="name" name="name" type="text" value="{{ appointment_data.name }}" required><br><br>
-  <label for="email">Email Address:</label><br>
-  <input id="email" name="email" type="email" value="{{ appointment_data.email }}" required><br><br>
-  <label for="date">Preferred Date:</label><br>
-  <input id="date" name="date" type="date" value="{{ appointment_data.date }}" required><br><br>
-  <label for="service">Service:</label><br>
-  <select id="service" name="service">
-    <option {% if appointment_data.service == "General Consultation" %}selected{% endif %}>General Consultation</option>
-    <option {% if appointment_data.service == "Pediatrics" %}selected{% endif %}>Pediatrics</option>
-    <option {% if appointment_data.service == "Dermatology" %}selected{% endif %}>Dermatology</option>
-    <option {% if appointment_data.service == "Lab Tests" %}selected{% endif %}>Lab Tests</option>
-  </select><br><br>
-  <button type="submit">Request Appointment</button>
+  <div class="form-group">
+    {{ form.name.label_tag }}
+    {{ form.name }}
+    {% if form.name.errors %}
+        <div class="error">{{ form.name.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.email.label_tag }}
+    {{ form.email }}
+    {% if form.email.errors %}
+        <div class="error">{{ form.email.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.phone.label_tag }}
+    {{ form.phone }}
+    {% if form.phone.errors %}
+        <div class="error">{{ form.phone.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.preferred_date.label_tag }}
+    {{ form.preferred_date }}
+    {% if form.preferred_date.errors %}
+        <div class="error">{{ form.preferred_date.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.service.label_tag }}
+    {{ form.service }}
+    {% if form.service.errors %}
+        <div class="error">{{ form.service.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.message.label_tag }}
+    {{ form.message }}
+    {% if form.message.errors %}
+        <div class="error">{{ form.message.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  <button type="submit" class="btn-primary">Request Appointment</button>
 </form>
 {% endblock %}

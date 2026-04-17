@@ -4,19 +4,97 @@
 {% block content %}
 <h1>Contact Us</h1>
 
-<p><strong>Phone:</strong>
-   <a href="tel:+919760901297">+91 9760901297</a>
-</p>
+<div class="contact-container">
+    <div class="contact-info">
+        <h2>Get in Touch</h2>
+        <p>Contact Osborn Clinic to schedule a consultation, ask about services, or get help with your next appointment.</p>
 
-<p><strong>Clinic Address:</strong><br>
-   Osborn Clinic, Nehru Complex, Shop No. 50,<br>
-   Near SBI Bank, Bargadwa Nakaha Road,<br>
-   Vikas Nagar, Gorakhpur 273007
-</p>
+        <div class="contact-details">
+            <p><strong>Phone:</strong>
+               <a href="tel:+919760901297">+91 9760901297</a>
+            </p>
 
-<p><strong>Google Maps:</strong><br>
-   <a href="https://maps.app.goo.gl/rtrWqpUd5y4uEi2h8" target="_blank" rel="noopener">
-     Open location in Google Maps
-   </a>
-</p>
+            <p><strong>Email:</strong>
+               <a href="mailto:drdeepakchandrasrivastava@gmail.com">drdeepakchandrasrivastava@gmail.com</a>
+            </p>
+
+            <p><strong>Clinic Address:</strong><br>
+               Osborn Clinic, Nehru Complex, Shop No. 50,<br>
+               Near SBI Bank, Bargadwa Nakaha Road,<br>
+               Vikas Nagar, Gorakhpur 273007
+            </p>
+
+            <p><strong>Clinic Timings:</strong><br>
+               8:00 AM - 10:00 AM<br>
+               3:00 PM - 8:00 PM<br>
+               Thursday closed
+            </p>
+
+            <p><strong>Google Maps:</strong><br>
+               <a href="https://maps.app.goo.gl/rtrWqpUd5y4uEi2h8" target="_blank" rel="noopener">
+                 Open location in Google Maps
+               </a>
+            </p>
+        </div>
+    </div>
+
+    <div class="contact-form-section">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" class="contact-form">
+            <h2>Send us a Message</h2>
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error">{{ form.name.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.phone.label_tag }}
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                    <div class="error">{{ form.phone.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.subject.label_tag }}
+                {{ form.subject }}
+                {% if form.subject.errors %}
+                    <div class="error">{{ form.subject.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.message.label_tag }}
+                {{ form.message }}
+                {% if form.message.errors %}
+                    <div class="error">{{ form.message.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn-primary">Send Message</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
