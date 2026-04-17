@@ -2,6 +2,8 @@ import os
 import re
 from typing import Optional
 
+from groq import APIConnectionError, APIStatusError
+
 
 CLINIC_INFO = {
     "doctor_name": "Dr. Deepak Chandra Srivastava",
@@ -25,28 +27,26 @@ CLINIC_INFO = {
 }
 
 
-SYSTEM_PROMPT = f"""
-You are Osborn Saathi, the website assistant for Osborn Healthcare in Gorakhpur.
-You help visitors with clinic information, doctor details, services, address, timings,
-appointments, and website navigation.
+SYSTEM_PROMPT = (
+    f"You are Osborn Saathi for Osborn Healthcare, Gorakhpur. "
+    "You can answer two kinds of questions: "
+    "1) clinic questions about Osborn Healthcare, and "
+    "2) general educational health questions in simple language. "
+    f"Doctor: {CLINIC_INFO['doctor_name']} ({CLINIC_INFO['qualifications']}). "
+    f"Phone: {CLINIC_INFO['phone']}. Email: {CLINIC_INFO['email']}. "
+    f"Address: {CLINIC_INFO['address']}. Timings: {CLINIC_INFO['timings']}. "
+    f"Services: {', '.join(CLINIC_INFO['services'])}. "
+    "For clinic facts, stay accurate and do not invent new facilities, timings, fees, equipment, or claims. "
+    "For general health questions, give short educational information only. "
+    "Do not diagnose, prescribe, interpret reports, or claim certainty about a user's condition. "
+    "For urgent symptoms, advise immediate medical care. "
+    "Keep replies under 90 words, use plain language, and end with a clinic handoff only when relevant."
+)
 
-Important rules:
-- You are not a doctor and must not diagnose diseases.
-- You must not prescribe medicines, dosages, or treatment plans.
-- For urgent symptoms, chest pain, breathing trouble, heavy bleeding, confusion, seizure,
-  or severe weakness, advise the user to seek immediate medical attention or contact the clinic right away.
-- Keep replies concise, friendly, and practical.
-- Prefer clinic facts over generic medical explanation.
-
-Clinic facts:
-- Doctor: {CLINIC_INFO["doctor_name"]}
-- Qualifications: {CLINIC_INFO["qualifications"]}
-- Phone: {CLINIC_INFO["phone"]}
-- Email: {CLINIC_INFO["email"]}
-- Address: {CLINIC_INFO["address"]}
-- Timings: {CLINIC_INFO["timings"]}
-- Services: {", ".join(CLINIC_INFO["services"])}
-""".strip()
+MAX_USER_MESSAGE_CHARS = 500
+MAX_HISTORY_ITEMS = 4
+MAX_HISTORY_MESSAGE_CHARS = 280
+MAX_AI_REPLY_CHARS = 700
 
 
 def _normalize(message: str) -> str:
@@ -76,25 +76,62 @@ def _services_text() -> str:
     return ", ".join(CLINIC_INFO["services"])
 
 
-def _rule_based_reply(message: str) -> Optional[str]:
-    text = _normalize(message)
+def _truncate_text(text: str, limit: int) -> str:
+    compact = " ".join(text.split())
+    if len(compact) <= limit:
+        return compact
+    return compact[: limit - 3].rstrip() + "..."
 
-    urgent_keywords = [
+
+def _compress_history(history: list[dict]) -> list[dict]:
+    safe_history = []
+    for item in history[-MAX_HISTORY_ITEMS:]:
+        role = item.get("role")
+        content = item.get("content")
+        if role not in {"user", "assistant"} or not isinstance(content, str):
+            continue
+        safe_history.append({
+            "role": role,
+            "content": _truncate_text(content, MAX_HISTORY_MESSAGE_CHARS),
+        })
+    return safe_history
+
+
+def _has_urgent_symptom(text: str) -> bool:
+    urgent_phrases = [
         "emergency",
         "urgent",
         "chest pain",
+        "pain in chest",
+        "pain chest",
+        "chest tightness",
+        "tightness in chest",
         "breathing problem",
         "breathlessness",
+        "shortness of breath",
         "can't breathe",
         "cant breathe",
+        "heavy bleeding",
         "bleeding",
         "seizure",
         "unconscious",
-        "severe pain",
         "stroke",
         "heart attack",
     ]
-    if any(_contains_phrase(text, keyword) for keyword in urgent_keywords):
+    if any(_contains_phrase(text, phrase) for phrase in urgent_phrases):
+        return True
+
+    pain_terms = ["pain", "severe pain"]
+    critical_body_terms = ["chest", "breath", "breathing", "heart"]
+    return any(_contains_phrase(text, pain) for pain in pain_terms) and any(
+        _contains_phrase(text, body) for body in critical_body_terms
+    )
+
+
+def _rule_based_reply(message: str) -> Optional[str]:
+    text = _normalize(message)
+
+    if _has_urgent_symptom(text):
         return (
             "If this feels urgent or includes symptoms like chest pain, breathing trouble, "
             "heavy bleeding, seizure, or severe weakness, please seek immediate medical care "
@@ -159,42 +196,52 @@ def _groq_reply(history: list[dict], message: str) -> Optional[str]:
     model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
     if not api_key:
         return None
-
-    try:
-        from groq import Groq
-    except Exception:
-        return None
+    from groq import Groq
 
     client = Groq(api_key=api_key)
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-    messages.extend(history[-6:])
-    messages.append({"role": "user", "content": message})
+    messages.extend(_compress_history(history))
+    messages.append({"role": "user", "content": _truncate_text(message, MAX_USER_MESSAGE_CHARS)})
 
     try:
         completion = client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=0.3,
-            max_completion_tokens=350,
+            max_completion_tokens=180,
             top_p=1,
         )
+    except APIStatusError as exc:
+        if exc.status_code == 413:
+            return "__PAYLOAD_TOO_LARGE__"
+        return None
+    except APIConnectionError:
+        return None
     except Exception:
         return None
 
-    return (completion.choices[0].message.content or "").strip() or None
+    reply = (completion.choices[0].message.content or "").strip() or None
+    if not reply:
+        return None
+    return _truncate_text(reply, MAX_AI_REPLY_CHARS)
 
 
 def get_saathi_reply(message: str, history: Optional[list[dict]] = None) -> str:
     history = history or []
+    message = _truncate_text(message, MAX_USER_MESSAGE_CHARS)
     rule_reply = _rule_based_reply(message)
     if rule_reply:
         return rule_reply
 
     ai_reply = _groq_reply(history, message)
+    if ai_reply == "__PAYLOAD_TOO_LARGE__":
+        return (
+            "This chat has become a bit long. Please ask a shorter question or refresh the page to start a new chat."
+        )
     if ai_reply:
         return ai_reply
 
     return (
-        "I can help with clinic timings, doctor details, services, location, and appointment guidance. "
-        f"For anything specific, please contact Osborn Clinic at {CLINIC_INFO['phone']}."
+        "I can help with clinic information and simple general health guidance. "
+        "For personal diagnosis or treatment advice, please speak with a doctor directly."
     )

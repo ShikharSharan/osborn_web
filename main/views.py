@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from .forms import AppointmentForm, ContactForm
-from .saathi import get_saathi_reply
+from .saathi import get_saathi_reply, _truncate_text
 
 
 BLOG_POSTS = {
@@ -152,9 +152,9 @@ def saathi_chat(request):
     history = request.session.get("saathi_history", [])
     reply = get_saathi_reply(message, history)
     updated_history = (history + [
-        {"role": "user", "content": message},
-        {"role": "assistant", "content": reply},
-    ])[-8:]
+        {"role": "user", "content": _truncate_text(message, 280)},
+        {"role": "assistant", "content": _truncate_text(reply, 280)},
+    ])[-4:]
     request.session["saathi_history"] = updated_history
 
     return JsonResponse({"reply": reply})
