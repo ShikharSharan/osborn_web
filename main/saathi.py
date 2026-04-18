@@ -44,9 +44,11 @@ SYSTEM_PROMPT = (
 )
 
 MAX_USER_MESSAGE_CHARS = 500
-MAX_HISTORY_ITEMS = 4
-MAX_HISTORY_MESSAGE_CHARS = 280
 MAX_AI_REPLY_CHARS = 700
+PAYLOAD_TOO_LARGE_REPLY = (
+    "This chat has become a bit long. Please ask a shorter question or refresh the page to start a new chat."
+)
+STABLE_GROQ_MODEL = "llama-3.3-70b-versatile"
 
 
 def _normalize(message: str) -> str:
@@ -81,20 +83,6 @@ def _truncate_text(text: str, limit: int) -> str:
     if len(compact) <= limit:
         return compact
     return compact[: limit - 3].rstrip() + "..."
-
-
-def _compress_history(history: list[dict]) -> list[dict]:
-    safe_history = []
-    for item in history[-MAX_HISTORY_ITEMS:]:
-        role = item.get("role")
-        content = item.get("content")
-        if role not in {"user", "assistant"} or not isinstance(content, str):
-            continue
-        safe_history.append({
-            "role": role,
-            "content": _truncate_text(content, MAX_HISTORY_MESSAGE_CHARS),
-        })
-    return safe_history
 
 
 def _has_urgent_symptom(text: str) -> bool:
@@ -191,28 +179,49 @@ def _rule_based_reply(message: str) -> Optional[str]:
     return None
 
 
-def _groq_reply(history: list[dict], message: str) -> Optional[str]:
+def _call_groq_model(client, model: str, message: str) -> Optional[str]:
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": _truncate_text(message, MAX_USER_MESSAGE_CHARS)},
+    ]
+
+    completion = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=0.3,
+        max_completion_tokens=180,
+        top_p=1,
+    )
+    reply = (completion.choices[0].message.content or "").strip() or None
+    if not reply:
+        return None
+    return _truncate_text(reply, MAX_AI_REPLY_CHARS)
+
+
+def _groq_reply(message: str) -> Optional[str]:
     api_key = os.getenv("GROQ_API_KEY")
-    model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    model = os.getenv("GROQ_MODEL", STABLE_GROQ_MODEL)
     if not api_key:
         return None
     from groq import Groq
 
     client = Groq(api_key=api_key)
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-    messages.extend(_compress_history(history))
-    messages.append({"role": "user", "content": _truncate_text(message, MAX_USER_MESSAGE_CHARS)})
 
     try:
-        completion = client.chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=0.3,
-            max_completion_tokens=180,
-            top_p=1,
-        )
+        return _call_groq_model(client, model, message)
     except APIStatusError as exc:
         if exc.status_code == 413:
+            try:
+                if model != STABLE_GROQ_MODEL:
+                    return _call_groq_model(client, STABLE_GROQ_MODEL, message)
+            except APIStatusError as fallback_exc:
+                if fallback_exc.status_code == 413:
+                    return "__PAYLOAD_TOO_LARGE__"
+                return None
+            except APIConnectionError:
+                return None
+            except Exception:
+                return None
             return "__PAYLOAD_TOO_LARGE__"
         return None
     except APIConnectionError:
@@ -220,24 +229,16 @@ def _groq_reply(history: list[dict], message: str) -> Optional[str]:
     except Exception:
         return None
 
-    reply = (completion.choices[0].message.content or "").strip() or None
-    if not reply:
-        return None
-    return _truncate_text(reply, MAX_AI_REPLY_CHARS)
-
 
 def get_saathi_reply(message: str, history: Optional[list[dict]] = None) -> str:
-    history = history or []
     message = _truncate_text(message, MAX_USER_MESSAGE_CHARS)
     rule_reply = _rule_based_reply(message)
     if rule_reply:
         return rule_reply
 
-    ai_reply = _groq_reply(history, message)
+    ai_reply = _groq_reply(message)
     if ai_reply == "__PAYLOAD_TOO_LARGE__":
-        return (
-            "This chat has become a bit long. Please ask a shorter question or refresh the page to start a new chat."
-        )
+        return PAYLOAD_TOO_LARGE_REPLY
     if ai_reply:
         return ai_reply
 

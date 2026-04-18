@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from .forms import AppointmentForm, ContactForm
-from .saathi import get_saathi_reply, _truncate_text
+from .saathi import PAYLOAD_TOO_LARGE_REPLY, get_saathi_reply
 
 
 BLOG_POSTS = {
@@ -149,12 +149,8 @@ def saathi_chat(request):
     if not message:
         return JsonResponse({"error": "Message is required."}, status=400)
 
-    history = request.session.get("saathi_history", [])
-    reply = get_saathi_reply(message, history)
-    updated_history = (history + [
-        {"role": "user", "content": _truncate_text(message, 280)},
-        {"role": "assistant", "content": _truncate_text(reply, 280)},
-    ])[-4:]
-    request.session["saathi_history"] = updated_history
-
+    request.session.pop("saathi_history", None)
+    reply = get_saathi_reply(message)
+    if reply == PAYLOAD_TOO_LARGE_REPLY:
+        return JsonResponse({"reply": reply, "reset": True})
     return JsonResponse({"reply": reply})
