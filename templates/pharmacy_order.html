@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Pharmacy Order{% endblock %}
+
+{% block content %}
+<h1>Order Medicines</h1>
+<p class="appointment-intro">Upload a prescription or enter medicine details. Choose home delivery or pickup and our pharmacy team will call to confirm.</p>
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="appointment-form service-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <div class="error">{{ form.non_field_errors.0 }}</div>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {% if form.name.errors %}<div class="error">{{ form.name.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        {% if form.phone.errors %}<div class="error">{{ form.phone.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% if form.email.errors %}<div class="error">{{ form.email.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.delivery_mode.label_tag }}
+        {{ form.delivery_mode }}
+        {% if form.delivery_mode.errors %}<div class="error">{{ form.delivery_mode.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.branch.label_tag }}
+        {{ form.branch }}
+        {% if form.branch.errors %}<div class="error">{{ form.branch.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.delivery_address.label_tag }}
+        {{ form.delivery_address }}
+        {% if form.delivery_address.errors %}<div class="error">{{ form.delivery_address.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.prescription_upload.label_tag }}
+        {{ form.prescription_upload }}
+        {% if form.prescription_upload.errors %}<div class="error">{{ form.prescription_upload.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.medicine_list.label_tag }}
+        {{ form.medicine_list }}
+        {% if form.medicine_list.errors %}<div class="error">{{ form.medicine_list.errors.0 }}</div>{% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.preferred_date.label_tag }}
+        {{ form.preferred_date }}
+        {% if form.preferred_date.errors %}<div class="error">{{ form.preferred_date.errors.0 }}</div>{% endif %}
+    </div>
+
+    <button type="submit" class="btn-primary">Submit Pharmacy Request</button>
+</form>
+
+<section class="instruction-section">
+    <h2>Pharmacy Notes</h2>
+    <ul class="instruction-list">
+        <li>Same-day delivery depends on medicine availability and delivery location.</li>
+        <li>Keep your phone available after submitting the request.</li>
+        <li>Prescription medicines are processed only after prescription verification.</li>
+    </ul>
+</section>
+{% endblock %}

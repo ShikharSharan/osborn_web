@@ -1,10 +1,12 @@
 import json
 
+from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_POST
-from .forms import AppointmentForm, ContactForm
+from .forms import AppointmentForm, ContactForm, PathologyBookingForm, PharmacyOrderForm
+from .models import Clinic
 from .saathi import PAYLOAD_TOO_LARGE_REPLY, get_saathi_reply
 
 
@@ -77,9 +79,28 @@ PATIENT_REVIEWS = [
     },
 ]
 
+SAATHI_RATE_LIMIT = 20
+SAATHI_RATE_WINDOW_SECONDS = 60
+
+
+def _client_ip(request):
+    forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip()
+    return request.META.get("REMOTE_ADDR", "unknown")
+
+
+def _is_saathi_rate_limited(request):
+    identifier = request.session.session_key or _client_ip(request)
+    cache_key = f"saathi_rate:{identifier}"
+    request_count = cache.get(cache_key, 0) + 1
+    cache.set(cache_key, request_count, SAATHI_RATE_WINDOW_SECONDS)
+    return request_count > SAATHI_RATE_LIMIT
+
 
 def home(request):
-    return render(request, "index.html", {"patient_reviews": PATIENT_REVIEWS})
+    clinics = Clinic.objects.filter(is_active=True)
+    return render(request, "index.html", {"patient_reviews": PATIENT_REVIEWS, "clinics": clinics})
 
 
 def about(request):
@@ -97,7 +118,8 @@ def contact(request):
     else:
         form = ContactForm()
 
-    return render(request, 'contact.html', {'form': form})
+    clinics = Clinic.objects.filter(is_active=True)
+    return render(request, 'contact.html', {'form': form, 'clinics': clinics})
 
 
 def providers(request):
@@ -111,12 +133,68 @@ def appointment(request):
             appointment = form.save()
             messages.success(request,
                 f"Thank you, {appointment.name}! Your appointment request for {appointment.get_service_display()} "
-                f"on {appointment.preferred_date} has been received. We'll contact you soon at {appointment.email}.")
+                f"at {appointment.clinic.name} "
+                f"on {appointment.preferred_date} has been received. We'll contact you soon at {appointment.phone}.")
             return redirect('appointment')
     else:
-        form = AppointmentForm()
+        initial = {}
+        clinic_slug = request.GET.get('clinic')
+        if clinic_slug:
+            clinic = Clinic.objects.filter(
+                slug=clinic_slug,
+                is_active=True,
+                offers_consultation=True,
+            ).first()
+            if clinic:
+                initial['clinic'] = clinic
+        form = AppointmentForm(initial=initial)
 
     return render(request, 'appointment.html', {'form': form})
+
+
+def pharmacy(request):
+    clinics = Clinic.objects.filter(is_active=True, offers_pharmacy=True)
+    return render(request, "pharmacy.html", {"clinics": clinics})
+
+
+def pharmacy_order(request):
+    if request.method == 'POST':
+        form = PharmacyOrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            order = form.save()
+            messages.success(
+                request,
+                f"Thank you, {order.name}! Your pharmacy request for {order.get_delivery_mode_display()} "
+                f"has been received. We'll contact you soon at {order.phone}.",
+            )
+            return redirect('pharmacy_order')
+    else:
+        form = PharmacyOrderForm()
+
+    return render(request, 'pharmacy_order.html', {'form': form})
+
+
+def pathology(request):
+    clinics = Clinic.objects.filter(is_active=True, offers_pathology=True)
+    return render(request, "pathology.html", {"clinics": clinics})
+
+
+def pathology_booking(request):
+    if request.method == 'POST':
+        form = PathologyBookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save()
+            messages.success(
+                request,
+                f"Thank you, {booking.patient_name}! Your pathology booking for "
+                f"{booking.get_collection_mode_display()} has been received. "
+                f"We'll contact you soon at {booking.phone}.",
+            )
+            return redirect('pathology_booking')
+    else:
+        form = PathologyBookingForm()
+
+    return render(request, 'pathology_booking.html', {'form': form})
 
 
 def faq(request):
@@ -140,6 +218,17 @@ def blog_detail(request, slug):
 
 @require_POST
 def saathi_chat(request):
+    if _is_saathi_rate_limited(request):
+        return JsonResponse(
+            {
+                "error": (
+                    "Too many Saathi messages in a short time. "
+                    "Please wait a minute and try again."
+                )
+            },
+            status=429,
+        )
+
     try:
         payload = json.loads(request.body or "{}")
     except json.JSONDecodeError:
@@ -149,7 +238,6 @@ def saathi_chat(request):
     if not message:
         return JsonResponse({"error": "Message is required."}, status=400)
 
-    request.session.pop("saathi_history", None)
     reply = get_saathi_reply(message)
     if reply == PAYLOAD_TOO_LARGE_REPLY:
         return JsonResponse({"reply": reply, "reset": True})

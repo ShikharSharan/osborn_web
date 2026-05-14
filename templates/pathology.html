@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Pathology{% endblock %}
+
+{% block content %}
+<section class="service-hero">
+    <p class="service-kicker">Osborn Pathology</p>
+    <h1>Lab Tests With Home Collection Support</h1>
+    <p class="section-intro">Book common tests, choose home collection or lab visit, and share preferred timing. Our team will call before confirming sample collection.</p>
+    <div class="hero-actions">
+        <a href="{% url 'pathology_booking' %}" class="btn-primary">Book a Lab Test</a>
+        <a href="{% url 'contact' %}" class="btn-secondary">Ask About Tests</a>
+    </div>
+</section>
+
+<section class="service-panel-grid">
+    <article class="service-panel">
+        <h2>Home Collection</h2>
+        <p>Choose home collection, enter your address, and a sample collector will call before arrival.</p>
+    </article>
+    <article class="service-panel">
+        <h2>Lab Visit</h2>
+        <p>Choose a branch and preferred date for sample collection at the lab.</p>
+    </article>
+    <article class="service-panel">
+        <h2>Common Tests</h2>
+        <p>Book CBC, KFT, LFT, thyroid, lipid profile, blood sugar, urine routine, vitamin D, and more.</p>
+    </article>
+</section>
+
+{% if clinics %}
+<section class="branch-strip">
+    <h2>Available Lab Branches</h2>
+    <div class="branch-list">
+        {% for clinic in clinics %}
+        <article>
+            <h3>{{ clinic.name }}</h3>
+            <p>{{ clinic.address|linebreaksbr }}</p>
+            <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></p>
+            {% if clinic.operating_hours %}<p><strong>Hours:</strong> {{ clinic.operating_hours }}</p>{% endif %}
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="instruction-section">
+    <h2>Home Collection Instructions</h2>
+    <ul class="instruction-list">
+        <li>Keep your phone available. The sample collector will call before arrival.</li>
+        <li>Some tests may require fasting. Our team will confirm if fasting is needed.</li>
+        <li>Keep a water bottle ready and avoid heavy meals if fasting is advised.</li>
+        <li>Share any referral doctor name or special instructions in the booking form.</li>
+    </ul>
+</section>
+{% endblock %}

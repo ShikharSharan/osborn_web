@@ -10,31 +10,26 @@
         <p>Contact Osborn Clinic to schedule a consultation, ask about services, or get help with your next appointment.</p>
 
         <div class="contact-details">
-            <p><strong>Phone:</strong>
-               <a href="tel:+919760901297">+91 9760901297</a>
-            </p>
-
-            <p><strong>Email:</strong>
-               <a href="mailto:drdeepakchandrasrivastava@gmail.com">drdeepakchandrasrivastava@gmail.com</a>
-            </p>
-
-            <p><strong>Clinic Address:</strong><br>
-               Osborn Clinic, Nehru Complex, Shop No. 50,<br>
-               Near SBI Bank, Bargadwa Nakaha Road,<br>
-               Vikas Nagar, Gorakhpur 273007
-            </p>
-
-            <p><strong>Clinic Timings:</strong><br>
-               8:00 AM - 10:00 AM<br>
-               3:00 PM - 8:00 PM<br>
-               Thursday closed
-            </p>
-
-            <p><strong>Google Maps:</strong><br>
-               <a href="https://maps.app.goo.gl/rtrWqpUd5y4uEi2h8" target="_blank" rel="noopener">
-                 Open location in Google Maps
-               </a>
-            </p>
+            {% for clinic in clinics %}
+            <article class="contact-clinic">
+                <h3>{{ clinic.name }}</h3>
+                <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></p>
+                {% if clinic.email %}
+                <p><strong>Email:</strong> <a href="mailto:{{ clinic.email }}">{{ clinic.email }}</a></p>
+                {% endif %}
+                <p><strong>Address:</strong><br>{{ clinic.address|linebreaksbr }}</p>
+                {% if clinic.operating_hours %}
+                <p><strong>Clinic Timings:</strong><br>{{ clinic.operating_hours }}</p>
+                {% endif %}
+                {% if clinic.google_maps_url %}
+                <p><strong>Google Maps:</strong><br>
+                    <a href="{{ clinic.google_maps_url }}" target="_blank" rel="noopener">Open location in Google Maps</a>
+                </p>
+                {% endif %}
+            </article>
+            {% empty %}
+            <p>Clinic contact details will be updated soon. Please use the form to reach us.</p>
+            {% endfor %}
         </div>
     </div>
 

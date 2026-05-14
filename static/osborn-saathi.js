@@ -7,6 +7,7 @@
     const closeButton = widget.querySelector(".saathi-close");
     const form = widget.querySelector(".saathi-form");
     const input = widget.querySelector(".saathi-input");
+    const sendButton = widget.querySelector(".saathi-send");
     const messages = widget.querySelector(".saathi-messages");
     const quickActionButtons = widget.querySelectorAll("[data-saathi-prompt]");
     const chatUrl = widget.dataset.chatUrl;
@@ -53,9 +54,12 @@
     async function sendMessage(text) {
         const message = text.trim();
         if (!message) return;
+        if (sendButton.disabled) return;
 
         appendMessage(message, "user");
         input.value = "";
+        input.disabled = true;
+        sendButton.disabled = true;
 
         const loading = document.createElement("article");
         loading.className = "saathi-message saathi-message-bot saathi-message-loading";
@@ -75,6 +79,9 @@
 
             const data = await response.json();
             loading.remove();
+            input.disabled = false;
+            sendButton.disabled = false;
+            input.focus();
 
             if (!response.ok) {
                 appendMessage(data.error || "Sorry, I could not respond right now.", "bot");
@@ -84,6 +91,9 @@
             appendMessage(data.reply, "bot");
         } catch (error) {
             loading.remove();
+            input.disabled = false;
+            sendButton.disabled = false;
+            input.focus();
             appendMessage("Sorry, Osborn Saathi is unavailable right now. Please try again in a moment.", "bot");
         }
     }

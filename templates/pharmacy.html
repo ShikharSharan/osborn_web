@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Pharmacy{% endblock %}
+
+{% block content %}
+<section class="service-hero">
+    <p class="service-kicker">Osborn Pharmacy</p>
+    <h1>Medicines by Prescription, Pickup, or Home Delivery</h1>
+    <p class="section-intro">Submit your prescription or medicine list, choose home delivery or store pickup, and our team will call to confirm availability, timing, and final details.</p>
+    <div class="hero-actions">
+        <a href="{% url 'pharmacy_order' %}" class="btn-primary">Order Medicines</a>
+        <a href="{% url 'contact' %}" class="btn-secondary">Contact Pharmacy</a>
+    </div>
+</section>
+
+<section class="service-panel-grid">
+    <article class="service-panel">
+        <h2>Home Delivery</h2>
+        <p>Share your complete delivery address and prescription. The pharmacy team will verify the request and coordinate delivery.</p>
+    </article>
+    <article class="service-panel">
+        <h2>Store Pickup</h2>
+        <p>Choose the pickup branch and submit your medicine details. We will confirm when the order is ready.</p>
+    </article>
+    <article class="service-panel">
+        <h2>Prescription Support</h2>
+        <p>Upload a prescription image or PDF, or type your medicine list if the upload is not available.</p>
+    </article>
+</section>
+
+{% if clinics %}
+<section class="branch-strip">
+    <h2>Available Pharmacy Branches</h2>
+    <div class="branch-list">
+        {% for clinic in clinics %}
+        <article>
+            <h3>{{ clinic.name }}</h3>
+            <p>{{ clinic.address|linebreaksbr }}</p>
+            <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></p>
+            {% if clinic.operating_hours %}<p><strong>Hours:</strong> {{ clinic.operating_hours }}</p>{% endif %}
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="instruction-section">
+    <h2>Before You Submit</h2>
+    <ul class="instruction-list">
+        <li>Upload a clear prescription whenever possible.</li>
+        <li>Enter medicine names, strength, and quantity if typing manually.</li>
+        <li>For home delivery, add house number, landmark, city, and pincode.</li>
+        <li>The pharmacy team will call before confirming the order.</li>
+    </ul>
+</section>
+{% endblock %}

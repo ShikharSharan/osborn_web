@@ -15,20 +15,24 @@
 <section class="stats-section">
     <div class="stats-grid">
         <div class="stat-card">
-            <span>MBBS, MD</span>
-            <p>Advanced training in medicine with fellowship-focused expertise in nephrology.</p>
+            <span>Our Goal</span>
+            <p>To make trusted physician and kidney care accessible, clear, and patient-centered for families in Gorakhpur.</p>
         </div>
         <div class="stat-card">
-            <span>AIIMS + Apollo</span>
-            <p>Clinical experience shaped by work at AIIMS Gorakhpur and Apollo Hospital, New Delhi.</p>
+            <span>Our Motive</span>
+            <p>To guide every patient with honest consultation, careful diagnosis, and treatment plans built around long-term health.</p>
         </div>
         <div class="stat-card">
-            <span>1</span>
-            <p>Dedicated lead doctor providing focused, personalized care at Osborn Clinic.</p>
+            <span>Services</span>
+            <p>Consultation, kidney-focused treatment, dialysis catheter placement, renal biopsy, central line insertion, and related procedures.</p>
         </div>
         <div class="stat-card">
-            <span>100+</span>
-            <p>Successful internal jugular dialysis catheter placements highlighted on the official profile.</p>
+            <span>Impact</span>
+            <p>Focused care that supports faster decisions, better treatment confidence, and meaningful follow-up for patients and families.</p>
+        </div>
+        <div class="stat-card">
+            <span>Difference</span>
+            <p>Led by Dr. Deepak Chandra Srivastava with AIIMS and Apollo experience, combining specialist skill with personal attention.</p>
         </div>
     </div>
 </section>
@@ -52,6 +56,69 @@
     </div>
 </section>
 
+<section class="our-clinics">
+    <h2>Our Clinics</h2>
+    <p class="section-intro">Visit the branch most convenient for doctor consultations, pharmacy support, and pathology services.</p>
+    <div class="clinics-grid">
+        {% for clinic in clinics %}
+        <article class="clinic-card">
+            <div>
+                <h3>{{ clinic.name }}</h3>
+                <p class="clinic-address">{{ clinic.address|linebreaksbr }}</p>
+            </div>
+
+            <dl class="clinic-details">
+                <div>
+                    <dt>Phone</dt>
+                    <dd><a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></dd>
+                </div>
+                {% if clinic.email %}
+                <div>
+                    <dt>Email</dt>
+                    <dd><a href="mailto:{{ clinic.email }}">{{ clinic.email }}</a></dd>
+                </div>
+                {% endif %}
+                {% if clinic.operating_hours %}
+                <div>
+                    <dt>Hours</dt>
+                    <dd>{{ clinic.operating_hours }}</dd>
+                </div>
+                {% endif %}
+                {% if clinic.services_offered %}
+                <div>
+                    <dt>Services</dt>
+                    <dd>{{ clinic.services_offered }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+
+            {% if clinic.map_embed_url %}
+            <iframe
+                src="{{ clinic.map_embed_url }}"
+                width="100%"
+                height="180"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            {% endif %}
+
+            <div class="clinic-actions">
+                {% if clinic.offers_consultation %}
+                <a href="{% url 'appointment' %}?clinic={{ clinic.slug }}" class="btn-link">Book at This Clinic</a>
+                {% endif %}
+                {% if clinic.google_maps_url %}
+                <a href="{{ clinic.google_maps_url }}" target="_blank" rel="noopener" class="btn-link">Open Map</a>
+                {% endif %}
+            </div>
+        </article>
+        {% empty %}
+        <p class="empty-state">Clinic locations will be updated soon. Please contact us for the latest visit details.</p>
+        {% endfor %}
+    </div>
+</section>
+
 <section class="services-overview">
     <h2>Our Services</h2>
     <ul class="service-list">
@@ -65,28 +132,12 @@
     <a href="{% url 'providers' %}" class="btn-link">Meet Dr. Deepak &raquo;</a>
 </section>
 
-<section class="locations">
-    <h2>Location &amp; Directions</h2>
-    <p><strong>Visit us:</strong> Osborn Clinic, Nehru Complex, Shop No. 50,
-        Near SBI Bank, Bargadwa Nakaha Road, Vikas Nagar, Gorakhpur 273007
-    </p>
-
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1588.126372110541!2d83.35646060911094!3d26.80472274187001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDQ4JzIwLjAiTiA4M8KwMjEnMjMuMSJF!5e0!3m2!1sen!2sin!4v1765049098606!5m2!1sen!2sin" 
-      width="100%"
-      height="220"
-      style="border:0; border-radius:6px;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-</section>
-
-
 <section class="quick-links">
     <h2>Patient Tools & Resources</h2>
     <div class="quick-cards">
         <a href="{% url 'appointment' %}" class="quick-link-card">Online Appointment</a>
+        <a href="{% url 'pharmacy_order' %}" class="quick-link-card">Pharmacy Order</a>
+        <a href="{% url 'pathology_booking' %}" class="quick-link-card">Pathology Booking</a>
         <a href="{% url 'faq' %}" class="quick-link-card">FAQ & Help</a>
         <a href="{% url 'resources' %}" class="quick-link-card">Patient Resources</a>
         <a href="{% url 'contact' %}" class="quick-link-card">Contact Us</a>
