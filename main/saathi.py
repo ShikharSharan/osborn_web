@@ -19,12 +19,14 @@ DEFAULT_CLINIC_INFO = {
     ),
     "timings": "8:00 AM - 10:00 AM and 3:00 PM - 8:00 PM. Thursday closed.",
     "services": [
-        "Consultation",
-        "Dialysis Catheter Placement",
-        "Central Line Insertion",
-        "Renal Biopsy",
-        "Lumbar Puncture",
-        "Bone Marrow Biopsy",
+        "Internal Medicine",
+        "Kidney Disease & Nephrology Care",
+        "Hypertension Treatment",
+        "Diabetes Management",
+        "Fever & Infection Treatment",
+        "Thyroid & Lifestyle Disorders",
+        "Chronic Disease Care",
+        "Preventive Health Checkups",
         "Pharmacy Order",
         "Pathology Booking",
         "Home Collection",
@@ -112,6 +114,7 @@ def _system_prompt() -> str:
         "1) clinic questions about Osborn Healthcare, and "
         "2) general educational health questions in simple language. "
         f"Doctor: {DEFAULT_CLINIC_INFO['doctor_name']} ({DEFAULT_CLINIC_INFO['qualifications']}). "
+        "Core care areas: Internal Medicine, Kidney Care, Hypertension, Diabetes, chronic disease management, and Preventive Healthcare. "
         f"{_clinic_context_text()} "
         "For clinic facts, stay accurate and do not invent new facilities, timings, fees, equipment, or claims. "
         "For general health questions, give short educational information only. "
@@ -245,7 +248,8 @@ def _rule_based_reply(message: str) -> Optional[str]:
     if _is_greeting(text):
         return (
             "Namaste, I am Osborn Saathi. I can help with clinic timings, services, doctor details, "
-            "locations, doctor appointments, pharmacy orders, and pathology bookings. I answer one question at a time."
+            "locations, appointments, pharmacy, pathology, kidney care, hypertension, diabetes, and preventive checkups. "
+            "I answer one question at a time."
         )
 
     if any(_contains_phrase(text, keyword) for keyword in ["timing", "timings", "time", "open", "hours", "clinic timing", "clinic timings"]):
@@ -272,9 +276,33 @@ def _rule_based_reply(message: str) -> Optional[str]:
             f"Available lab branches: {_service_locations_text('offers_pathology', 'Pathology')}"
         )
 
+    if any(
+        _contains_phrase(text, keyword)
+        for keyword in [
+            "kidney",
+            "nephrology",
+            "hypertension",
+            "blood pressure",
+            "diabetes",
+            "thyroid",
+            "preventive",
+            "checkup",
+            "chronic disease",
+            "ckd",
+            "creatinine",
+            "proteinuria",
+        ]
+    ):
+        return (
+            "Osborn Healthcare supports Internal Medicine, Kidney Disease & Nephrology Care, "
+            "Hypertension Treatment, Diabetes Management, Thyroid & Lifestyle Disorders, "
+            "chronic disease care, and Preventive Health Checkups. Please book an appointment "
+            "for personalized evaluation."
+        )
+
     if any(_contains_phrase(text, keyword) for keyword in ["doctor", "deepak", "qualification", "who is", "specialist"]):
         return (
-            f"{DEFAULT_CLINIC_INFO['doctor_name']} is a physician and kidney specialist in Gorakhpur. "
+            f"{DEFAULT_CLINIC_INFO['doctor_name']} provides Internal Medicine, Kidney Care, Hypertension, Diabetes, and Preventive Healthcare support in Gorakhpur. "
             f"Qualifications: {DEFAULT_CLINIC_INFO['qualifications']}."
         )
 

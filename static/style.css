@@ -571,6 +571,27 @@ blockquote span {
     font-weight: 700;
 }
 
+.about-page {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-page > p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.85;
+}
+
+.about-band {
+    padding-top: 8px;
+}
+
+.about-band p {
+    color: var(--muted);
+    line-height: 1.8;
+}
+
 footer {
     background: var(--brand);
     color: white;

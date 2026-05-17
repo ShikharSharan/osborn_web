@@ -4,61 +4,91 @@
 
 {% block content %}
 <section class="hero">
-    <h1>Welcome to Osborn Healthcare</h1>
-    <p class="hero-subtitle">Expert MD Medicine and kidney care in Gorakhpur with compassionate consultation, focused diagnosis, and patient-first treatment by Dr. Deepak Chandra Srivastava.</p>
+    <h1>Osborn Healthcare</h1>
+    <p class="hero-subtitle">Advanced, evidence-based, and patient-focused care for Internal Medicine, Kidney Care, Hypertension, Diabetes, and Preventive Healthcare in Gorakhpur.</p>
     <div class="hero-actions">
         <a href="{% url 'appointment' %}" class="btn-primary">Book an Appointment</a>
-        <a href="{% url 'providers' %}" class="btn-secondary">Meet Dr. Deepak</a>
+        <a href="{% url 'about' %}" class="btn-secondary">About Osborn</a>
     </div>
 </section>
 
 <section class="stats-section">
     <div class="stats-grid">
         <div class="stat-card">
-            <span>Our Goal</span>
-            <p>To make trusted physician and kidney care accessible, clear, and patient-centered for families in Gorakhpur.</p>
+            <span>Mission</span>
+            <p>Accessible, affordable, world-class healthcare with stronger community awareness through preventive medicine and patient education.</p>
         </div>
         <div class="stat-card">
-            <span>Our Motive</span>
-            <p>To guide every patient with honest consultation, careful diagnosis, and treatment plans built around long-term health.</p>
+            <span>Vision</span>
+            <p>To become one of India's trusted healthcare centres for Internal Medicine, Kidney Care, and Preventive Healthcare.</p>
         </div>
         <div class="stat-card">
             <span>Services</span>
-            <p>Consultation, kidney-focused treatment, dialysis catheter placement, renal biopsy, central line insertion, and related procedures.</p>
+            <p>Kidney disease care, hypertension treatment, diabetes management, fever care, thyroid disorders, and preventive checkups.</p>
         </div>
         <div class="stat-card">
-            <span>Impact</span>
-            <p>Focused care that supports faster decisions, better treatment confidence, and meaningful follow-up for patients and families.</p>
+            <span>Approach</span>
+            <p>Early diagnosis, evidence-based treatment, ethical consultation, and personalized long-term disease management.</p>
         </div>
         <div class="stat-card">
-            <span>Difference</span>
-            <p>Led by Dr. Deepak Chandra Srivastava with AIIMS and Apollo experience, combining specialist skill with personal attention.</p>
+            <span>Promise</span>
+            <p>Best care, better health, and trusted healthcare with compassion, integrity, and transparent medical practice.</p>
         </div>
     </div>
 </section>
 
 <section class="why-choose-us">
-    <h2>Why Choose Osborn Healthcare?</h2>
-    <p class="section-intro">We combine personalized medical attention with modern diagnostic support so every patient receives the right care, quickly and respectfully.</p>
+    <h2>Why Patients Choose Osborn Healthcare</h2>
+    <p class="section-intro">Patients choose Osborn Healthcare for clinical excellence, modern medical standards, and compassionate care focused on long-term wellness.</p>
     <div class="cards">
         <div class="card">
-            <h3>Personalized Care</h3>
-            <p>Each patient is evaluated carefully with treatment plans shaped around symptoms, diagnosis, and long-term well-being.</p>
+            <h3>Expert & Evidence-Based Care</h3>
+            <p>Treatment protocols are guided by modern medical recommendations and patient safety standards.</p>
         </div>
         <div class="card">
-            <h3>Expert Team</h3>
-            <p>Dr. Deepak and the clinic support staff work together to guide your care with attention and respect.</p>
+            <h3>Personalized Patient Management</h3>
+            <p>Every patient receives individualized attention, counselling, and long-term disease management support.</p>
         </div>
         <div class="card">
-            <h3>Specialized Procedures</h3>
-            <p>From renal biopsy to central line insertion and dialysis catheter placement, care is backed by practical procedural expertise.</p>
+            <h3>Ethical & Transparent Practice</h3>
+            <p>We believe in honest consultation, rational treatment, and compassionate healthcare delivery.</p>
         </div>
     </div>
 </section>
 
+<section class="services-overview">
+    <h2>Best Healthcare Services in Gorakhpur</h2>
+    <p class="section-intro">Osborn Healthcare provides specialized medical consultation and chronic disease management for families seeking reliable care.</p>
+    <ul class="service-list">
+        <li>Kidney Disease & Nephrology Care</li>
+        <li>High Blood Pressure (Hypertension) Treatment</li>
+        <li>Diabetes Management</li>
+        <li>Fever & Infection Treatment</li>
+        <li>Thyroid & Lifestyle Disorders</li>
+        <li>Chronic Disease Care</li>
+        <li>Preventive Health Checkups</li>
+        <li>General Physician Consultation</li>
+        <li>Internal Medicine Services</li>
+    </ul>
+</section>
+
+<section class="services-overview">
+    <h2>Advanced Kidney & Hypertension Care</h2>
+    <p class="section-intro">Our care focuses on early detection, accurate diagnosis, and long-term kidney preservation using internationally accepted medical guidelines.</p>
+    <ul class="service-list">
+        <li>Chronic Kidney Disease (CKD)</li>
+        <li>Proteinuria</li>
+        <li>Resistant Hypertension</li>
+        <li>Diabetic Kidney Disease</li>
+        <li>Electrolyte Disorders</li>
+        <li>Creatinine & Kidney Function Evaluation</li>
+        <li>Dialysis Counselling & Kidney Protection</li>
+    </ul>
+</section>
+
 <section class="our-clinics">
     <h2>Our Clinics</h2>
-    <p class="section-intro">Visit the branch most convenient for doctor consultations, pharmacy support, and pathology services.</p>
+    <p class="section-intro">Visit the branch most convenient for consultation, chronic disease care, pharmacy support, and pathology services.</p>
     <div class="clinics-grid">
         {% for clinic in clinics %}
         <article class="clinic-card">
@@ -120,16 +150,17 @@
 </section>
 
 <section class="services-overview">
-    <h2>Our Services</h2>
+    <h2>Trusted Centre for Chronic Disease Management</h2>
     <ul class="service-list">
-        <li>Physical examination and physician consultation</li>
-        <li>Dialysis catheter placement including internal jugular, femoral, and permacath access</li>
-        <li>Central line insertion</li>
-        <li>Renal biopsy</li>
-        <li>Lumbar puncture</li>
-        <li>Bone marrow biopsy</li>
+        <li>High Blood Pressure</li>
+        <li>Diabetes</li>
+        <li>Kidney Disease</li>
+        <li>Obesity & Metabolic Disorders</li>
+        <li>Thyroid Disorders</li>
+        <li>Recurrent Infections</li>
+        <li>Lifestyle Diseases</li>
     </ul>
-    <a href="{% url 'providers' %}" class="btn-link">Meet Dr. Deepak &raquo;</a>
+    <a href="{% url 'providers' %}" class="btn-link">Meet Dr. Deepak</a>
 </section>
 
 <section class="quick-links">
@@ -146,7 +177,7 @@
 
 <section class="testimonials">
     <h2>What Our Patients Say</h2>
-    <p class="section-intro">Real feedback from patients and families who trusted Osborn Healthcare for consultation, treatment, and recovery.</p>
+    <p class="section-intro">Real feedback from patients and families who trusted Osborn Healthcare for consultation, treatment guidance, and long-term wellness support.</p>
     <div class="review-grid">
         {% for review in patient_reviews %}
         <article class="review-card">

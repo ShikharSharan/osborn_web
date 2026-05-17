@@ -14,7 +14,11 @@ DEFAULT_CLINIC = {
     "phone": "+91 9760901297",
     "email": "drdeepakchandrasrivastava@gmail.com",
     "operating_hours": "8:00 AM - 10:00 AM and 3:00 PM - 8:00 PM. Thursday closed.",
-    "services_offered": "Doctor Consultation, Pharmacy, Pathology, Home Collection",
+    "services_offered": (
+        "Internal Medicine, Kidney Disease & Nephrology Care, Hypertension Treatment, "
+        "Diabetes Management, Fever & Infection Treatment, Thyroid & Lifestyle Disorders, "
+        "Chronic Disease Care, Preventive Health Checkups, Pharmacy, Pathology, Home Collection"
+    ),
     "offers_consultation": True,
     "offers_pharmacy": True,
     "offers_pathology": True,
@@ -155,12 +159,15 @@ class Migration(migrations.Migration):
             name="service",
             field=models.CharField(
                 choices=[
-                    ("consultation", "Consultation"),
-                    ("dialysis_cat", "Dialysis Catheter Placement"),
-                    ("central_line", "Central Line Insertion"),
-                    ("renal_biopsy", "Renal Biopsy"),
-                    ("lumbar_punct", "Lumbar Puncture"),
-                    ("bone_marrow", "Bone Marrow Biopsy"),
+                    ("consultation", "General Physician Consultation"),
+                    ("internal_medicine", "Internal Medicine Consultation"),
+                    ("kidney_care", "Kidney Disease & Nephrology Care"),
+                    ("hypertension", "High Blood Pressure Treatment"),
+                    ("diabetes", "Diabetes Management"),
+                    ("fever_infection", "Fever & Infection Treatment"),
+                    ("thyroid_lifestyle", "Thyroid & Lifestyle Disorders"),
+                    ("preventive_checkup", "Preventive Health Checkup"),
+                    ("dialysis_counselling", "Dialysis Counselling & Kidney Protection"),
                 ],
                 default="consultation",
                 max_length=32,

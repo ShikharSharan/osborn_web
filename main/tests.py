@@ -18,7 +18,7 @@ class SaathiTests(TestCase):
             phone="+91 9760901297",
             email="clinic@example.com",
             operating_hours="8:00 AM - 10:00 AM and 3:00 PM - 8:00 PM",
-            services_offered="Doctor Consultation, Pharmacy, Pathology",
+            services_offered="Internal Medicine, Kidney Disease & Nephrology Care, Hypertension Treatment, Diabetes Management, Preventive Health Checkups",
             offers_consultation=True,
             offers_pharmacy=True,
             offers_pathology=True,
@@ -26,7 +26,7 @@ class SaathiTests(TestCase):
 
     def test_saathi_answers_common_intents_without_ai_fallback(self):
         self.assertIn("8:00 AM", get_saathi_reply("What are the clinic timings?"))
-        self.assertIn("Doctor Consultation", get_saathi_reply("What services are available?"))
+        self.assertIn("Internal Medicine", get_saathi_reply("What services are available?"))
         self.assertIn("Available pharmacy branches", get_saathi_reply("How do I order medicines from the pharmacy?"))
         self.assertIn("Available lab branches", get_saathi_reply("How do I book pathology tests?"))
 

@@ -1,9 +1,708 @@
 {% extends "base.html" %}
 {% block title %}About Us{% endblock %}
 {% block content %}
-<h1>About Osborn Healthcare</h1>
-<p>Osborn Healthcare is built around the practice of Dr. Deepak Chandra Srivastava, MBBS, MD (Medicine), Fellowship in Nephrology, offering patient-centered physician care and kidney-focused treatment in Gorakhpur.</p>
-<p>According to Dr. Deepak’s official website, his background includes graduation and MD Medicine from JNMCH, Aligarh Muslim University, fellowship training in nephrology at Apollo Hospitals, New Delhi, and clinical experience at AIIMS Gorakhpur and Apollo Hospital, New Delhi.</p>
-<p>His practice focuses on careful diagnosis, compassionate consultation, and procedures including dialysis catheter placement, central line insertion, renal biopsy, lumbar puncture, and bone marrow biopsy.</p>
-<p>Our mission is to support better health through clinical excellence, trusted guidance, and accessible care for patients and families in Gorakhpur.</p>
+
+<style>
+  :root {
+    --color-primary:        #01696f;
+    --color-primary-hover:  #0c4e54;
+    --color-primary-highlight: #cedcd8;
+    --color-bg:             #f7f6f2;
+    --color-surface:        #f9f8f5;
+    --color-surface-2:      #fbfbf9;
+    --color-surface-offset: #f3f0ec;
+    --color-border:         #d4d1ca;
+    --color-divider:        #dcd9d5;
+    --color-text:           #28251d;
+    --color-text-muted:     #7a7974;
+    --color-text-faint:     #bab9b4;
+    --color-success:        #437a22;
+
+    --text-xs:   clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --text-sm:   clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+    --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --text-lg:   clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+    --text-xl:   clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+    --text-2xl:  clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+
+    --space-1:  0.25rem;
+    --space-2:  0.5rem;
+    --space-3:  0.75rem;
+    --space-4:  1rem;
+    --space-5:  1.25rem;
+    --space-6:  1.5rem;
+    --space-8:  2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 3px oklch(0.2 0.01 80 / 0.07);
+    --shadow-md: 0 4px 14px oklch(0.2 0.01 80 / 0.09);
+
+    --content-default: 960px;
+    --content-narrow:  700px;
+  }
+
+  .about-page *, .about-page *::before, .about-page *::after { box-sizing: border-box; }
+
+  .about-page {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.65;
+  }
+
+  .about-page h1, .about-page h2, .about-page h3 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .about-page p, .about-page li { text-wrap: pretty; }
+
+  .ap-container {
+    max-width: var(--content-default);
+    margin-inline: auto;
+    padding-inline: clamp(var(--space-4), 5vw, var(--space-10));
+  }
+
+  .ap-container--narrow {
+    max-width: var(--content-narrow);
+    margin-inline: auto;
+    padding-inline: clamp(var(--space-4), 5vw, var(--space-10));
+  }
+
+  .ap-hero {
+    background: linear-gradient(135deg,
+      oklch(from var(--color-primary) 0.3 0.08 192 / 1) 0%,
+      oklch(from var(--color-primary) 0.22 0.06 200 / 1) 100%);
+    color: #f0f8f7;
+    padding-block: clamp(var(--space-12), 8vw, var(--space-20));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ap-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 80% 50%,
+      oklch(0.85 0.06 192 / 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .ap-hero-eyebrow {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: oklch(0.85 0.08 192);
+    background: oklch(1 0 0 / 0.1);
+    border: 1px solid oklch(1 0 0 / 0.18);
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .ap-hero h1 {
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: var(--space-6);
+    max-width: 14ch;
+  }
+
+  .ap-hero h1 em {
+    font-style: italic;
+    color: oklch(0.88 0.09 192);
+  }
+
+  .ap-hero-desc {
+    font-size: var(--text-base);
+    color: oklch(0.88 0.02 192);
+    max-width: 60ch;
+    margin-bottom: var(--space-4);
+  }
+
+  .ap-hero-desc + .ap-hero-desc {
+    margin-top: var(--space-3);
+  }
+
+  .ap-divider {
+    border: none;
+    border-top: 1px solid var(--color-divider);
+    margin-block: 0;
+  }
+
+  .ap-section {
+    padding-block: clamp(var(--space-10), 6vw, var(--space-16));
+  }
+
+  .ap-section--alt {
+    background: var(--color-surface);
+  }
+
+  .ap-section--dark {
+    background: #1a2e2c;
+    color: #d6edeb;
+  }
+
+  .ap-section-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .ap-section--dark .ap-section-label {
+    color: oklch(0.72 0.09 192);
+  }
+
+  .ap-section-title {
+    font-size: var(--text-xl);
+    font-weight: 400;
+    margin-bottom: var(--space-5);
+    color: var(--color-text);
+  }
+
+  .ap-section--dark .ap-section-title {
+    color: #e8f5f4;
+  }
+
+  .ap-section-body {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 65ch;
+  }
+
+  .ap-section--dark .ap-section-body {
+    color: oklch(0.72 0.02 192);
+  }
+
+  .ap-services-intro {
+    padding-block: clamp(var(--space-10), 6vw, var(--space-16));
+    background: var(--color-surface-2);
+  }
+
+  .ap-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .ap-service-card {
+    background: var(--color-surface);
+    border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    transition: box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ap-service-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .ap-service-check {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-full);
+    background: oklch(from var(--color-primary) l c h / 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .ap-service-check svg {
+    width: 13px;
+    height: 13px;
+    stroke: var(--color-primary);
+  }
+
+  .ap-service-card-text {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.4;
+  }
+
+  .ap-kidney {
+    padding-block: clamp(var(--space-10), 6vw, var(--space-16));
+  }
+
+  .ap-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(var(--space-8), 4vw, var(--space-16));
+    align-items: start;
+    margin-top: var(--space-8);
+  }
+
+  @media (max-width: 680px) {
+    .ap-two-col { grid-template-columns: 1fr; }
+  }
+
+  .ap-bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .ap-bullet-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  .ap-bullet-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    opacity: 0.7;
+  }
+
+  .ap-kidney-note {
+    margin-top: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    background: oklch(from var(--color-primary) l c h / 0.07);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .ap-why {
+    padding-block: clamp(var(--space-10), 6vw, var(--space-16));
+    background: var(--color-surface);
+  }
+
+  .ap-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  .ap-feature-card {
+    background: var(--color-surface-2);
+    border: 1px solid oklch(from var(--color-text) l c h / 0.07);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-6) var(--space-7);
+    transition: box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ap-feature-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .ap-feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: oklch(from var(--color-primary) l c h / 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+  }
+
+  .ap-feature-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-primary);
+  }
+
+  .ap-feature-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
+
+  .ap-feature-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .ap-chronic {
+    padding-block: clamp(var(--space-10), 6vw, var(--space-16));
+  }
+
+  .ap-chronic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+
+  .ap-chronic-tag {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid oklch(from var(--color-text) l c h / 0.08);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  .ap-chronic-tag::before {
+    content: '';
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    opacity: 0.6;
+  }
+
+  .ap-mv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  @media (max-width: 600px) {
+    .ap-mv-grid { grid-template-columns: 1fr; }
+  }
+
+  .ap-mv-card {
+    background: var(--color-surface);
+    border: 1px solid oklch(from var(--color-text) l c h / 0.07);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+  }
+
+  .ap-mv-icon {
+    font-size: 1.8rem;
+    margin-bottom: var(--space-4);
+    line-height: 1;
+  }
+
+  .ap-mv-card h3 {
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .ap-mv-card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    max-width: 42ch;
+  }
+
+  .ap-tagline-band {
+    background: linear-gradient(135deg,
+      oklch(from var(--color-primary) 0.28 0.09 192) 0%,
+      oklch(from var(--color-primary) 0.20 0.07 200) 100%);
+    color: #fff;
+    padding-block: clamp(var(--space-10), 6vw, var(--space-16));
+    text-align: center;
+  }
+
+  .ap-tagline-band h2 {
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: var(--space-4);
+  }
+
+  .ap-tagline-band p {
+    font-size: var(--text-base);
+    color: oklch(0.88 0.03 192);
+    max-width: 50ch;
+    margin-inline: auto;
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<section class="about-page">
+
+  <!-- SECTION 1: HERO -->
+  <div class="ap-hero">
+    <div class="ap-container">
+      <span class="ap-hero-eyebrow">About Osborn Healthcare</span>
+      <h1>Trusted Care. <em>Better Health.</em></h1>
+      <p class="ap-hero-desc">
+        Osborn Clinic is a leading multi-speciality healthcare centre dedicated to delivering advanced,
+        evidence-based, and patient-focused medical care with excellence, compassion, and integrity.
+      </p>
+      <p class="ap-hero-desc">
+        Recognized for comprehensive Internal Medicine, Kidney Care, Hypertension, Diabetes, and
+        Preventive Healthcare services, Osborn Healthcare is committed to providing high-quality
+        treatment using modern medical standards and personalized patient management.
+      </p>
+      <p class="ap-hero-desc">
+        With a strong focus on clinical excellence, early diagnosis, and long-term wellness, Osborn
+        Healthcare aims to become one of the most trusted healthcare destinations for patients seeking
+        reliable and affordable medical care.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: BEST HEALTHCARE SERVICES IN GORAKHPUR -->
+  <div class="ap-services-intro">
+    <div class="ap-container">
+      <p class="ap-section-label">Gorakhpur's Trusted Clinic</p>
+      <h2 class="ap-section-title">Best Healthcare Services in Gorakhpur</h2>
+      <p class="ap-section-body">
+        Osborn Healthcare provides specialized medical consultation and chronic disease management
+        across a wide range of conditions — all under one roof.
+      </p>
+      <div class="ap-services-grid">
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Kidney Disease &amp; Nephrology Care</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">High Blood Pressure (Hypertension) Treatment</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Diabetes Management</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Fever &amp; Infection Treatment</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Thyroid &amp; Lifestyle Disorders</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Chronic Disease Care</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Preventive Health Checkups</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">General Physician Consultation</span>
+        </div>
+        <div class="ap-service-card">
+          <span class="ap-service-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <span class="ap-service-card-text">Internal Medicine Services</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: ADVANCED KIDNEY & HYPERTENSION CARE -->
+  <div class="ap-kidney ap-section">
+    <div class="ap-container">
+      <p class="ap-section-label">Specialised Nephrology</p>
+      <h2 class="ap-section-title">Advanced Kidney &amp; Hypertension Care</h2>
+      <div class="ap-two-col">
+        <div>
+          <p class="ap-section-body">
+            Osborn Healthcare offers comprehensive evaluation and management for patients
+            suffering from kidney-related conditions and hypertension. Our protocols follow
+            internationally accepted medical guidelines for accurate diagnosis and long-term preservation.
+          </p>
+          <div class="ap-kidney-note">
+            Our approach focuses on <strong>early detection</strong>, accurate diagnosis, and long-term
+            kidney preservation using internationally accepted medical guidelines.
+          </div>
+        </div>
+        <ul class="ap-bullet-list" aria-label="Kidney care services">
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Chronic Kidney Disease (CKD)</li>
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Proteinuria</li>
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Resistant Hypertension</li>
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Diabetic Kidney Disease</li>
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Electrolyte Disorders</li>
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Creatinine &amp; Kidney Function Evaluation</li>
+          <li><span class="ap-bullet-dot" aria-hidden="true"></span>Dialysis Counselling &amp; Kidney Protection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ap-divider">
+
+  <!-- SECTION 4: WHY PATIENTS CHOOSE OSBORN -->
+  <div class="ap-why ap-section">
+    <div class="ap-container">
+      <p class="ap-section-label">Why Patients Choose Us</p>
+      <h2 class="ap-section-title">Why Patients Choose Osborn Healthcare</h2>
+      <div class="ap-features-grid">
+
+        <div class="ap-feature-card">
+          <div class="ap-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 class="ap-feature-title">Expert &amp; Evidence-Based Care</h3>
+          <p class="ap-feature-desc">
+            Treatment protocols are based on modern international medical recommendations and patient safety standards.
+          </p>
+        </div>
+
+        <div class="ap-feature-card">
+          <div class="ap-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <h3 class="ap-feature-title">Personalized Patient Management</h3>
+          <p class="ap-feature-desc">
+            Every patient receives individualized attention, counselling, and long-term disease management support.
+          </p>
+        </div>
+
+        <div class="ap-feature-card">
+          <div class="ap-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h3 class="ap-feature-title">Comprehensive Preventive Healthcare</h3>
+          <p class="ap-feature-desc">
+            Special emphasis is placed on prevention, lifestyle modification, and early disease detection.
+          </p>
+        </div>
+
+        <div class="ap-feature-card">
+          <div class="ap-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <h3 class="ap-feature-title">Ethical &amp; Transparent Practice</h3>
+          <p class="ap-feature-desc">
+            We believe in honest consultation, rational treatment, and compassionate healthcare delivery.
+          </p>
+        </div>
+
+        <div class="ap-feature-card">
+          <div class="ap-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <h3 class="ap-feature-title">Focus on Long-Term Wellness</h3>
+          <p class="ap-feature-desc">
+            Our goal is not only treatment of disease but improvement of overall health, quality of life, and patient well-being.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: CHRONIC DISEASE MANAGEMENT -->
+  <div class="ap-chronic ap-section">
+    <div class="ap-container">
+      <p class="ap-section-label">Long-Term Care</p>
+      <h2 class="ap-section-title">Trusted Centre for Chronic Disease Management</h2>
+      <p class="ap-section-body">
+        Osborn Healthcare specializes in the long-term management of a wide range of chronic
+        and lifestyle-related conditions, delivering consistent, patient-centred care over time.
+      </p>
+      <div class="ap-chronic-grid">
+        <div class="ap-chronic-tag">High Blood Pressure</div>
+        <div class="ap-chronic-tag">Diabetes</div>
+        <div class="ap-chronic-tag">Kidney Disease</div>
+        <div class="ap-chronic-tag">Obesity &amp; Metabolic Disorders</div>
+        <div class="ap-chronic-tag">Thyroid Disorders</div>
+        <div class="ap-chronic-tag">Recurrent Infections</div>
+        <div class="ap-chronic-tag">Lifestyle Diseases</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ap-divider">
+
+  <!-- SECTION 6: MISSION & VISION -->
+  <div class="ap-section ap-section--alt">
+    <div class="ap-container">
+      <p class="ap-section-label">Our Purpose</p>
+      <h2 class="ap-section-title">Mission &amp; Vision</h2>
+      <div class="ap-mv-grid">
+        <div class="ap-mv-card">
+          <div class="ap-mv-icon" aria-hidden="true">🎯</div>
+          <h3>Our Mission</h3>
+          <p>
+            To deliver accessible, affordable, and world-class healthcare services while improving
+            community health awareness through preventive medicine and patient education.
+          </p>
+        </div>
+        <div class="ap-mv-card">
+          <div class="ap-mv-icon" aria-hidden="true">🔭</div>
+          <h3>Our Vision</h3>
+          <p>
+            To become one of the most trusted and respected healthcare centres for Internal Medicine,
+            Kidney Care, and Preventive Healthcare in India.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: TAGLINE BAND -->
+  <div class="ap-tagline-band">
+    <div class="ap-container">
+      <h2>Best Care. Better Health. Trusted Healthcare.</h2>
+      <p>At Osborn Healthcare, patient care remains at the heart of everything we do.</p>
+    </div>
+  </div>
+
+</section>
+
 {% endblock %}

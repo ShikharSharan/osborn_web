@@ -42,12 +42,15 @@ class Clinic(models.Model):
 
 class Appointment(models.Model):
     SERVICE_CHOICES = [
-        ('consultation', 'Consultation'),
-        ('dialysis_cat', 'Dialysis Catheter Placement'),
-        ('central_line', 'Central Line Insertion'),
-        ('renal_biopsy', 'Renal Biopsy'),
-        ('lumbar_punct', 'Lumbar Puncture'),
-        ('bone_marrow', 'Bone Marrow Biopsy'),
+        ('consultation', 'General Physician Consultation'),
+        ('internal_medicine', 'Internal Medicine Consultation'),
+        ('kidney_care', 'Kidney Disease & Nephrology Care'),
+        ('hypertension', 'High Blood Pressure Treatment'),
+        ('diabetes', 'Diabetes Management'),
+        ('fever_infection', 'Fever & Infection Treatment'),
+        ('thyroid_lifestyle', 'Thyroid & Lifestyle Disorders'),
+        ('preventive_checkup', 'Preventive Health Checkup'),
+        ('dialysis_counselling', 'Dialysis Counselling & Kidney Protection'),
     ]
 
     name = models.CharField(max_length=100)
