@@ -4,7 +4,7 @@
 <h1>Book an Appointment</h1>
 <p class="appointment-intro">Schedule your visit for Internal Medicine, Kidney Care, Hypertension, Diabetes, chronic disease management, or Preventive Healthcare. Choose the clinic branch and service you need, and we will contact you to confirm.</p>
 
-{% if messages %}
+{% if messages %}#here we check if there are any messages to display, such as success messages after form submission
 <div class="messages">
     {% for message in messages %}
     <div class="alert alert-success">
