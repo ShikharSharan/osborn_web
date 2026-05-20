@@ -154,7 +154,21 @@ def appointment(request):
 
 def pharmacy(request):
     clinics = Clinic.objects.filter(is_active=True, offers_pharmacy=True)
-    return render(request, "pharmacy.html", {"clinics": clinics})
+    
+    if request.method == 'POST':
+        form = PharmacyOrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            order = form.save()
+            messages.success(
+                request,
+                f"Thank you, {order.name}! Your pharmacy request for {order.get_delivery_mode_display()} "
+                f"has been received. We'll contact you soon at {order.phone}.",
+            )
+            return redirect('pharmacy')
+    else:
+        form = PharmacyOrderForm()
+    
+    return render(request, "pharmacy.html", {"clinics": clinics, "form": form})
 
 
 def pharmacy_order(request):

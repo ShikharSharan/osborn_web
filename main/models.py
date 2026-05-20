@@ -9,6 +9,7 @@ class Clinic(models.Model):
     slug = models.SlugField(max_length=140, unique=True, blank=True)
     address = models.TextField()
     phone = models.CharField(max_length=20)
+    alternate_phone = models.CharField(max_length=20, blank=True)
     email = models.EmailField(blank=True)
     operating_hours = models.CharField(max_length=160, blank=True)
     services_offered = models.TextField(blank=True)

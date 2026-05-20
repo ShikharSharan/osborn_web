@@ -101,6 +101,7 @@ def _clinic_context_text() -> str:
 
         details.append(
             f"{clinic.name}: address {clinic.address}; phone {clinic.phone}; "
+            f"alternate phone {clinic.alternate_phone or 'not listed'}; "
             f"email {clinic.email or 'not listed'}; hours {clinic.operating_hours or 'not listed'}; "
             f"services {services}; map {clinic.google_maps_url or 'not listed'}"
         )
@@ -149,6 +150,7 @@ def _service_locations_text(flag_name: str, service_label: str) -> str:
         return f"{service_label} branch details are not listed yet. Please contact {_clinic_contacts_text()}."
     return "; ".join(
         f"{clinic.name}: {clinic.phone}"
+        + (f", {clinic.alternate_phone}" if clinic.alternate_phone else "")
         + (f", {clinic.address}" if clinic.address else "")
         for clinic in clinics
     )
@@ -160,6 +162,7 @@ def _clinic_contacts_text() -> str:
         return f"{DEFAULT_CLINIC_INFO['phone']} or email {DEFAULT_CLINIC_INFO['email']}"
     return "; ".join(
         f"{clinic.name}: {clinic.phone}"
+        + (f", {clinic.alternate_phone}" if clinic.alternate_phone else "")
         + (f", {clinic.email}" if clinic.email else "")
         for clinic in clinics
     )

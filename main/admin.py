@@ -11,6 +11,7 @@ class ClinicAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'phone',
+        'alternate_phone',
         'offers_consultation',
         'offers_pharmacy',
         'offers_pathology',
@@ -18,13 +19,13 @@ class ClinicAdmin(admin.ModelAdmin):
         'sort_order',
     ]
     list_filter = ['is_active', 'offers_consultation', 'offers_pharmacy', 'offers_pathology']
-    search_fields = ['name', 'address', 'phone', 'email', 'services_offered']
+    search_fields = ['name', 'address', 'phone', 'alternate_phone', 'email', 'services_offered']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['sort_order', 'name']
 
     fieldsets = (
         ('Clinic Details', {
-            'fields': ('name', 'slug', 'address', 'phone', 'email', 'operating_hours')
+            'fields': ('name', 'slug', 'address', 'phone', 'alternate_phone', 'email', 'operating_hours')
         }),
         ('Services', {
             'fields': ('services_offered', 'offers_consultation', 'offers_pharmacy', 'offers_pathology')
