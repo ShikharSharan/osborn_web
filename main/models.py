@@ -144,3 +144,78 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+
+class SaathiSettings(models.Model):
+    name = models.CharField(max_length=80, default="Default", unique=True)
+    ai_enabled = models.BooleanField(
+        default=True,
+        help_text="If enabled, unmatched questions can be sent to the configured AI provider.",
+    )
+    fallback_reply = models.TextField(
+        default=(
+            "I can help with clinic information and simple general health guidance. "
+            "For personal diagnosis or treatment advice, please speak with a doctor directly."
+        )
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Saathi Setting"
+        verbose_name_plural = "Saathi Settings"
+
+    def __str__(self):
+        return self.name
+
+
+class SaathiChatLog(models.Model):
+    SOURCE_RULE = "rule"
+    SOURCE_AI = "ai"
+    SOURCE_FALLBACK = "fallback"
+    SOURCE_AI_DISABLED = "ai_disabled"
+    SOURCE_AI_NOT_CONFIGURED = "ai_not_configured"
+    SOURCE_AI_ERROR = "ai_error"
+    SOURCE_RATE_LIMIT = "rate_limit"
+    SOURCE_CHOICES = [
+        (SOURCE_RULE, "Internal rule"),
+        (SOURCE_AI, "AI provider"),
+        (SOURCE_FALLBACK, "Fallback"),
+        (SOURCE_AI_DISABLED, "AI disabled fallback"),
+        (SOURCE_AI_NOT_CONFIGURED, "AI not configured fallback"),
+        (SOURCE_AI_ERROR, "AI error fallback"),
+        (SOURCE_RATE_LIMIT, "Rate limited"),
+    ]
+
+    message = models.TextField()
+    reply = models.TextField(blank=True)
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES)
+    ai_model = models.CharField(max_length=80, blank=True)
+    error_detail = models.TextField(blank=True)
+    ip_address = models.CharField(max_length=64, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.get_source_display()} - {self.created_at:%Y-%m-%d %H:%M}"
+
+
+class SiteErrorLog(models.Model):
+    path = models.CharField(max_length=500)
+    method = models.CharField(max_length=12, blank=True)
+    status_code = models.PositiveIntegerField(default=500)
+    exception_type = models.CharField(max_length=160)
+    message = models.TextField(blank=True)
+    traceback = models.TextField(blank=True)
+    user_label = models.CharField(max_length=160, blank=True)
+    ip_address = models.CharField(max_length=64, blank=True)
+    user_agent = models.TextField(blank=True)
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.exception_type} on {self.path}"
