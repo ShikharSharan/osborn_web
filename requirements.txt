@@ -2,3 +2,6 @@ Django==6.0.4
 python-dotenv==1.0.0
 groq==0.24.0
 gunicorn
+dj-database-url
+psycopg2-binary
+whitenoise[brotli]
