@@ -6,8 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from .forms import AppointmentForm, ContactForm, PathologyBookingForm, PharmacyOrderForm
-from .models import Clinic
-from .saathi import PAYLOAD_TOO_LARGE_REPLY, get_saathi_reply
+from .models import Clinic, SaathiChatLog
+from .saathi import PAYLOAD_TOO_LARGE_REPLY, get_saathi_reply_with_source
 
 
 BLOG_POSTS = {
@@ -154,7 +154,21 @@ def appointment(request):
 
 def pharmacy(request):
     clinics = Clinic.objects.filter(is_active=True, offers_pharmacy=True)
-    return render(request, "pharmacy.html", {"clinics": clinics})
+    
+    if request.method == 'POST':
+        form = PharmacyOrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            order = form.save()
+            messages.success(
+                request,
+                f"Thank you, {order.name}! Your pharmacy request for {order.get_delivery_mode_display()} "
+                f"has been received. We'll contact you soon at {order.phone}.",
+            )
+            return redirect('pharmacy')
+    else:
+        form = PharmacyOrderForm()
+    
+    return render(request, "pharmacy.html", {"clinics": clinics, "form": form})
 
 
 def pharmacy_order(request):
@@ -219,6 +233,12 @@ def blog_detail(request, slug):
 @require_POST
 def saathi_chat(request):
     if _is_saathi_rate_limited(request):
+        SaathiChatLog.objects.create(
+            message="",
+            reply="Too many Saathi messages in a short time.",
+            source=SaathiChatLog.SOURCE_RATE_LIMIT,
+            ip_address=_client_ip(request),
+        )
         return JsonResponse(
             {
                 "error": (
@@ -238,7 +258,15 @@ def saathi_chat(request):
     if not message:
         return JsonResponse({"error": "Message is required."}, status=400)
 
-    reply = get_saathi_reply(message)
+    reply, source, ai_model, error_detail = get_saathi_reply_with_source(message)
+    SaathiChatLog.objects.create(
+        message=message,
+        reply=reply,
+        source=source,
+        ai_model=ai_model,
+        error_detail=error_detail,
+        ip_address=_client_ip(request),
+    )
     if reply == PAYLOAD_TOO_LARGE_REPLY:
         return JsonResponse({"reply": reply, "reset": True})
     return JsonResponse({"reply": reply})

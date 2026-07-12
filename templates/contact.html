@@ -13,7 +13,7 @@
             {% for clinic in clinics %}
             <article class="contact-clinic">
                 <h3>{{ clinic.name }}</h3>
-                <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></p>
+                <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a>{% if clinic.alternate_phone %}, <a href="tel:{{ clinic.alternate_phone }}">{{ clinic.alternate_phone }}</a>{% endif %}</p>
                 {% if clinic.email %}
                 <p><strong>Email:</strong> <a href="mailto:{{ clinic.email }}">{{ clinic.email }}</a></p>
                 {% endif %}

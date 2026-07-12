@@ -35,7 +35,7 @@
         <article>
             <h3>{{ clinic.name }}</h3>
             <p>{{ clinic.address|linebreaksbr }}</p>
-            <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></p>
+            <p><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a>{% if clinic.alternate_phone %}, <a href="tel:{{ clinic.alternate_phone }}">{{ clinic.alternate_phone }}</a>{% endif %}</p>
             {% if clinic.operating_hours %}<p><strong>Hours:</strong> {{ clinic.operating_hours }}</p>{% endif %}
         </article>
         {% endfor %}

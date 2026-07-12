@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Appointment, Clinic, Contact, PathologyBooking, PharmacyOrder
+from .models import (
+    Appointment,
+    Clinic,
+    Contact,
+    PathologyBooking,
+    PharmacyOrder,
+    SaathiChatLog,
+    SaathiSettings,
+    SiteErrorLog,
+)
 
 admin.site.site_header = "Osborn Administration"
 admin.site.site_title = "Osborn Admin"
@@ -11,6 +20,7 @@ class ClinicAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'phone',
+        'alternate_phone',
         'offers_consultation',
         'offers_pharmacy',
         'offers_pathology',
@@ -18,13 +28,13 @@ class ClinicAdmin(admin.ModelAdmin):
         'sort_order',
     ]
     list_filter = ['is_active', 'offers_consultation', 'offers_pharmacy', 'offers_pathology']
-    search_fields = ['name', 'address', 'phone', 'email', 'services_offered']
+    search_fields = ['name', 'address', 'phone', 'alternate_phone', 'email', 'services_offered']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['sort_order', 'name']
 
     fieldsets = (
         ('Clinic Details', {
-            'fields': ('name', 'slug', 'address', 'phone', 'email', 'operating_hours')
+            'fields': ('name', 'slug', 'address', 'phone', 'alternate_phone', 'email', 'operating_hours')
         }),
         ('Services', {
             'fields': ('services_offered', 'offers_consultation', 'offers_pharmacy', 'offers_pathology')
@@ -122,3 +132,113 @@ class PathologyBookingAdmin(admin.ModelAdmin):
             'fields': ('status', 'created_at')
         }),
     )
+
+
+@admin.register(SaathiSettings)
+class SaathiSettingsAdmin(admin.ModelAdmin):
+    list_display = ['name', 'ai_enabled', 'updated_at']
+    readonly_fields = ['updated_at']
+
+    fieldsets = (
+        ('AI Control', {
+            'fields': ('name', 'ai_enabled')
+        }),
+        ('Fallback Response', {
+            'fields': ('fallback_reply',)
+        }),
+        ('System', {
+            'fields': ('updated_at',)
+        }),
+    )
+
+
+@admin.register(SaathiChatLog)
+class SaathiChatLogAdmin(admin.ModelAdmin):
+    list_display = ['created_at', 'source', 'ai_model', 'error_preview', 'message_preview', 'reply_preview', 'ip_address']
+    list_filter = ['source', 'ai_model', 'created_at']
+    search_fields = ['message', 'reply', 'error_detail', 'ip_address']
+    readonly_fields = ['message', 'reply', 'source', 'ai_model', 'error_detail', 'ip_address', 'created_at']
+    ordering = ['-created_at']
+    actions = ['clear_selected_logs', 'clear_all_logs']
+
+    def has_add_permission(self, request):
+        return False
+
+    @admin.action(description="Clear selected Saathi logs")
+    def clear_selected_logs(self, request, queryset):
+        deleted_count = queryset.count()
+        queryset.delete()
+        self.message_user(request, f"Cleared {deleted_count} Saathi chat log(s).")
+
+    @admin.action(description="Clear all Saathi logs")
+    def clear_all_logs(self, request, queryset):
+        deleted_count = SaathiChatLog.objects.count()
+        SaathiChatLog.objects.all().delete()
+        self.message_user(request, f"Cleared all Saathi chat logs ({deleted_count}).")
+
+    def message_preview(self, obj):
+        return obj.message[:80]
+
+    def reply_preview(self, obj):
+        return obj.reply[:80]
+
+    def error_preview(self, obj):
+        return obj.error_detail[:80]
+
+
+@admin.register(SiteErrorLog)
+class SiteErrorLogAdmin(admin.ModelAdmin):
+    list_display = ['created_at', 'status_code', 'exception_type', 'path', 'method', 'is_resolved', 'user_label', 'ip_address']
+    list_filter = ['status_code', 'exception_type', 'is_resolved', 'created_at']
+    search_fields = ['path', 'message', 'traceback', 'user_label', 'ip_address']
+    readonly_fields = [
+        'path',
+        'method',
+        'status_code',
+        'exception_type',
+        'message',
+        'traceback',
+        'user_label',
+        'ip_address',
+        'user_agent',
+        'created_at',
+    ]
+    ordering = ['-created_at']
+    actions = ['mark_resolved', 'mark_unresolved', 'clear_selected_error_logs', 'clear_all_error_logs']
+
+    fieldsets = (
+        ('Error', {
+            'fields': ('exception_type', 'message', 'status_code', 'is_resolved')
+        }),
+        ('Request', {
+            'fields': ('path', 'method', 'user_label', 'ip_address', 'user_agent', 'created_at')
+        }),
+        ('Traceback', {
+            'fields': ('traceback',)
+        }),
+    )
+
+    def has_add_permission(self, request):
+        return False
+
+    @admin.action(description="Mark selected errors resolved")
+    def mark_resolved(self, request, queryset):
+        updated_count = queryset.update(is_resolved=True)
+        self.message_user(request, f"Marked {updated_count} error log(s) resolved.")
+
+    @admin.action(description="Mark selected errors unresolved")
+    def mark_unresolved(self, request, queryset):
+        updated_count = queryset.update(is_resolved=False)
+        self.message_user(request, f"Marked {updated_count} error log(s) unresolved.")
+
+    @admin.action(description="Clear selected error logs")
+    def clear_selected_error_logs(self, request, queryset):
+        deleted_count = queryset.count()
+        queryset.delete()
+        self.message_user(request, f"Cleared {deleted_count} error log(s).")
+
+    @admin.action(description="Clear all error logs")
+    def clear_all_error_logs(self, request, queryset):
+        deleted_count = SiteErrorLog.objects.count()
+        SiteErrorLog.objects.all().delete()
+        self.message_user(request, f"Cleared all error logs ({deleted_count}).")

@@ -100,7 +100,12 @@
             <dl class="clinic-details">
                 <div>
                     <dt>Phone</dt>
-                    <dd><a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a></dd>
+                    <dd>
+                        <a href="tel:{{ clinic.phone }}">{{ clinic.phone }}</a>
+                        {% if clinic.alternate_phone %}
+                        <br><a href="tel:{{ clinic.alternate_phone }}">{{ clinic.alternate_phone }}</a>
+                        {% endif %}
+                    </dd>
                 </div>
                 {% if clinic.email %}
                 <div>
