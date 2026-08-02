@@ -34,16 +34,6 @@
     </div>
 
     <div class="contact-form-section">
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
         <form method="post" class="contact-form">
             <h2>Send us a Message</h2>
             {% csrf_token %}

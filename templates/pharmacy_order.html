@@ -5,16 +5,6 @@
 <h1>Order Medicines</h1>
 <p class="appointment-intro">Upload a prescription or enter medicine details. Choose home delivery or pickup and our pharmacy team will call to confirm.</p>
 
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
 <form method="post" enctype="multipart/form-data" class="appointment-form service-form">
     {% csrf_token %}
     {% if form.non_field_errors %}

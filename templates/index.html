@@ -4,54 +4,107 @@
 
 {% block content %}
 <section class="hero">
-    <h1>Osborn Healthcare</h1>
-    <p class="hero-subtitle">Advanced, evidence-based, and patient-focused care for Internal Medicine, Kidney Care, Hypertension, Diabetes, and Preventive Healthcare in Gorakhpur.</p>
-    <div class="hero-actions">
-        <a href="{% url 'appointment' %}" class="btn-primary">Book an Appointment</a>
-        <a href="{% url 'about' %}" class="btn-secondary">About Osborn</a>
+    <div class="hero-copy">
+        <p class="hero-kicker">Gorakhpur kidney care and internal medicine</p>
+        <h1>Care that listens. Health that lasts.</h1>
+        <p class="hero-subtitle">Expert kidney, diabetes, blood pressure, and internal medicine care for you and your family.</p>
+        <div class="hero-actions">
+            <a href="{% url 'appointment' %}" class="btn-primary">Book an appointment</a>
+            <a href="tel:+919760901297" class="btn-secondary">Call the clinic</a>
+        </div>
+        <div class="hero-hours">
+            <span><strong>Morning</strong>8-10 AM</span>
+            <span><strong>Evening</strong>3-8 PM</span>
+            <span><strong>Closed</strong>Thursday</span>
+        </div>
+    </div>
+    <div class="hero-media">
+        <div class="hero-photo" role="img" aria-label="Doctor consultation at Osborn Healthcare"></div>
+        <div class="hero-note">Patient-first care · Clear guidance at every step</div>
     </div>
 </section>
 
-<section class="stats-section">
-    <div class="stats-grid">
-        <div class="stat-card">
-            <span>Mission</span>
-            <p>Accessible, affordable, world-class healthcare with stronger community awareness through preventive medicine and patient education.</p>
-        </div>
-        <div class="stat-card">
-            <span>Vision</span>
-            <p>To become one of India's trusted healthcare centres for Internal Medicine, Kidney Care, and Preventive Healthcare.</p>
-        </div>
-        <div class="stat-card">
-            <span>Services</span>
-            <p>Kidney disease care, hypertension treatment, diabetes management, fever care, thyroid disorders, and preventive checkups.</p>
-        </div>
-        <div class="stat-card">
-            <span>Approach</span>
-            <p>Early diagnosis, evidence-based treatment, ethical consultation, and personalized long-term disease management.</p>
-        </div>
-        <div class="stat-card">
-            <span>Promise</span>
-            <p>Best care, better health, and trusted healthcare with compassion, integrity, and transparent medical practice.</p>
-        </div>
+<section class="quick-actions-section">
+    <a href="{% url 'appointment' %}" class="action-card">
+        <span>01</span>
+        <strong>Consult a doctor</strong>
+        <em>Book a clinic visit</em>
+    </a>
+    <a href="{% url 'pathology_booking' %}" class="action-card">
+        <span>02</span>
+        <strong>Book a lab test</strong>
+        <em>Pathology and home collection</em>
+    </a>
+    <a href="{% url 'pharmacy_order' %}" class="action-card">
+        <span>03</span>
+        <strong>Order medicines</strong>
+        <em>Pharmacy assistance</em>
+    </a>
+</section>
+
+<section class="care-section">
+    <div class="section-header">
+        <p class="section-kicker">Care areas</p>
+        <h2>Simple care for everyday and long-term health needs</h2>
+        <p>Plain-language guidance for kidney health, sugar, blood pressure, fever, thyroid, and preventive checkups.</p>
+    </div>
+    <div class="care-grid">
+        <article class="care-card">
+            <span>Kidney</span>
+            <h3>Kidney Care</h3>
+            <p>CKD guidance, kidney function evaluation, urine protein checks, and long-term support.</p>
+        </article>
+        <article class="care-card">
+            <span>BP</span>
+            <h3>Blood Pressure Care</h3>
+            <p>Evaluation and hypertension management with clear follow-up advice.</p>
+        </article>
+        <article class="care-card">
+            <span>Sugar</span>
+            <h3>Diabetes Care</h3>
+            <p>Monitoring, treatment planning, lifestyle guidance, and family education.</p>
+        </article>
+        <article class="care-card">
+            <span>General</span>
+            <h3>Everyday Medicine</h3>
+            <p>Fever, infection, thyroid, lifestyle disorders, and preventive health checkups.</p>
+        </article>
     </div>
 </section>
 
-<section class="why-choose-us">
-    <h2>Why Patients Choose Osborn Healthcare</h2>
-    <p class="section-intro">Patients choose Osborn Healthcare for clinical excellence, modern medical standards, and compassionate care focused on long-term wellness.</p>
+<section class="doctor-trust">
+    <div>
+        <p class="section-kicker">Meet the doctor</p>
+        <h2>Dr. Deepak Chandra Srivastava</h2>
+        <p class="doctor-meta">MBBS, MD (Medicine), Fellowship in Nephrology</p>
+        <p>Care at Osborn Healthcare is built around listening carefully, explaining clearly, and giving practical treatment plans for families.</p>
+        <a href="{% url 'providers' %}" class="btn-link">Meet the Doctor</a>
+    </div>
+    <blockquote>
+        Good care starts when patients understand what is happening and what to do next.
+    </blockquote>
+</section>
+
+<section class="why-choose-us trust-band">
+    <div class="section-header">
+        <p class="section-kicker">Why patients choose us</p>
+        <h2>Trust, clarity, and follow-up care</h2>
+    </div>
     <div class="cards">
-        <div class="card">
-            <h3>Expert & Evidence-Based Care</h3>
+        <div class="card trust-card">
+            <span>01</span>
+            <h3>Evidence-based care</h3>
             <p>Treatment protocols are guided by modern medical recommendations and patient safety standards.</p>
         </div>
-        <div class="card">
-            <h3>Personalized Patient Management</h3>
-            <p>Every patient receives individualized attention, counselling, and long-term disease management support.</p>
+        <div class="card trust-card">
+            <span>02</span>
+            <h3>Personal attention</h3>
+            <p>Every patient receives time, counselling, and long-term disease management support.</p>
         </div>
-        <div class="card">
-            <h3>Ethical & Transparent Practice</h3>
-            <p>We believe in honest consultation, rational treatment, and compassionate healthcare delivery.</p>
+        <div class="card trust-card">
+            <span>03</span>
+            <h3>Transparent practice</h3>
+            <p>Honest consultation, rational treatment, and compassionate healthcare delivery.</p>
         </div>
     </div>
 </section>
