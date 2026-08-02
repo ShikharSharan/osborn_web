@@ -5,16 +5,6 @@
 <h1>Book Pathology Test</h1>
 <p class="appointment-intro">Select tests, choose home collection or lab visit, and our team will call to confirm your booking.</p>
 
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
 <form method="post" class="appointment-form service-form">
     {% csrf_token %}
     {% if form.non_field_errors %}

@@ -35,10 +35,36 @@
     }
 
     function formatMessage(text) {
-        let formatted = escapeHtml(text);
-        formatted = formatted.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-        formatted = formatted.replace(/\n/g, "<br>");
-        return formatted;
+        const lines = escapeHtml(text).split(/\n+/);
+        let inList = false;
+        const html = [];
+
+        lines.forEach(function (line) {
+            const bullet = line.match(/^\s*[-*]\s+(.+)/);
+            if (bullet) {
+                if (!inList) {
+                    html.push("<ul>");
+                    inList = true;
+                }
+                html.push(`<li>${bullet[1].replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")}</li>`);
+                return;
+            }
+
+            if (inList) {
+                html.push("</ul>");
+                inList = false;
+            }
+
+            if (line.trim()) {
+                html.push(line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>"));
+            }
+        });
+
+        if (inList) {
+            html.push("</ul>");
+        }
+
+        return html.join("<br>");
     }
 
     function appendMessage(text, sender) {
@@ -63,7 +89,7 @@
 
         const loading = document.createElement("article");
         loading.className = "saathi-message saathi-message-bot saathi-message-loading";
-        loading.innerHTML = "<p>Thinking...</p>";
+        loading.innerHTML = '<p><span class="saathi-typing" aria-label="Osborn Saathi is typing"><span></span><span></span><span></span></span></p>';
         messages.appendChild(loading);
         messages.scrollTop = messages.scrollHeight;
 
