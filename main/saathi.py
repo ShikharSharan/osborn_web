@@ -17,7 +17,7 @@ DEFAULT_CLINIC_INFO = {
         "Osborn Clinic, Nehru Complex, Shop No. 50, Near SBI Bank, "
         "Bargadwa Nakaha Road, Vikas Nagar, Gorakhpur 273007"
     ),
-    "timings": "8:00 AM - 10:00 AM and 3:00 PM - 8:00 PM. Thursday closed.",
+    "timings": "10:00 AM - 1:00 PM and 4:00 PM - 8:00 PM. Thursday closed.",
     "services": [
         "Internal Medicine",
         "Kidney Disease & Nephrology Care",
@@ -40,7 +40,12 @@ MAX_AI_REPLY_CHARS = 700
 PAYLOAD_TOO_LARGE_REPLY = (
     "This chat has become a bit long. Please ask a shorter question or refresh the page to start a new chat."
 )
-STABLE_GROQ_MODEL = "llama-3.3-70b-versatile"
+DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
+DEPRECATED_GROQ_MODELS = {
+    "llama-3.3-70b-versatile": DEFAULT_GROQ_MODEL,
+    "llama-3.1-8b-instant": "openai/gpt-oss-20b",
+}
+GROQ_FALLBACK_MODELS = ("qwen/qwen3.6-27b", "openai/gpt-oss-20b")
 
 
 def _normalize(message: str) -> str:
@@ -351,9 +356,14 @@ def _call_groq_model(client, model: str, message: str) -> Optional[str]:
     return _truncate_text(reply, MAX_AI_REPLY_CHARS)
 
 
+def _groq_model_from_env() -> str:
+    configured_model = os.getenv("GROQ_MODEL", DEFAULT_GROQ_MODEL).strip() or DEFAULT_GROQ_MODEL
+    return DEPRECATED_GROQ_MODELS.get(configured_model, configured_model)
+
+
 def _groq_reply(message: str) -> Tuple[Optional[str], str]:
     api_key = os.getenv("GROQ_API_KEY")
-    model = os.getenv("GROQ_MODEL", STABLE_GROQ_MODEL)
+    model = _groq_model_from_env()
     if not api_key:
         logger.info("Groq API key is not configured; using Saathi fallback response.")
         return None, "GROQ_API_KEY is not configured."
@@ -372,43 +382,44 @@ def _groq_reply(message: str) -> Tuple[Optional[str], str]:
             "Groq API status error in Saathi.",
             extra={"status_code": exc.status_code, "model": model},
         )
-        if exc.status_code == 413:
-            try:
-                if model != STABLE_GROQ_MODEL:
-                    reply = _call_groq_model(client, STABLE_GROQ_MODEL, message)
+        if exc.status_code in {404, 413}:
+            last_fallback_error = error_detail
+            for fallback_model in GROQ_FALLBACK_MODELS:
+                if fallback_model == model:
+                    continue
+                try:
+                    reply = _call_groq_model(client, fallback_model, message)
                     if not reply:
-                        return None, "Groq fallback model returned an empty reply."
+                        last_fallback_error = f"Groq fallback model {fallback_model} returned an empty reply."
+                        continue
                     return reply, ""
-            except APIStatusError as fallback_exc:
-                fallback_error_detail = (
-                    f"Groq fallback model status error {fallback_exc.status_code} "
-                    f"for model {STABLE_GROQ_MODEL}: {str(fallback_exc)[:500]}"
-                )
-                logger.warning(
-                    "Groq fallback model returned a status error in Saathi.",
-                    extra={"status_code": fallback_exc.status_code, "model": STABLE_GROQ_MODEL},
-                )
-                if fallback_exc.status_code == 413:
-                    return "__PAYLOAD_TOO_LARGE__", fallback_error_detail
-                return None, fallback_error_detail
-            except APIConnectionError:
-                fallback_error_detail = f"Groq fallback model connection error for model {STABLE_GROQ_MODEL}."
-                logger.warning(
-                    "Groq fallback model connection error in Saathi.",
-                    extra={"model": STABLE_GROQ_MODEL},
-                )
-                return None, fallback_error_detail
-            except Exception as fallback_exc:
-                fallback_error_detail = (
-                    f"Unexpected Groq fallback error for model {STABLE_GROQ_MODEL}: "
-                    f"{fallback_exc.__class__.__name__}: {str(fallback_exc)[:500]}"
-                )
-                logger.exception(
-                    "Unexpected Groq fallback error in Saathi.",
-                    extra={"model": STABLE_GROQ_MODEL},
-                )
-                return None, fallback_error_detail
-            return "__PAYLOAD_TOO_LARGE__", error_detail
+                except APIStatusError as fallback_exc:
+                    last_fallback_error = (
+                        f"Groq fallback model status error {fallback_exc.status_code} "
+                        f"for model {fallback_model}: {str(fallback_exc)[:500]}"
+                    )
+                    logger.warning(
+                        "Groq fallback model returned a status error in Saathi.",
+                        extra={"status_code": fallback_exc.status_code, "model": fallback_model},
+                    )
+                    if fallback_exc.status_code == 413:
+                        return "__PAYLOAD_TOO_LARGE__", last_fallback_error
+                except APIConnectionError:
+                    last_fallback_error = f"Groq fallback model connection error for model {fallback_model}."
+                    logger.warning(
+                        "Groq fallback model connection error in Saathi.",
+                        extra={"model": fallback_model},
+                    )
+                except Exception as fallback_exc:
+                    last_fallback_error = (
+                        f"Unexpected Groq fallback error for model {fallback_model}: "
+                        f"{fallback_exc.__class__.__name__}: {str(fallback_exc)[:500]}"
+                    )
+                    logger.exception(
+                        "Unexpected Groq fallback error in Saathi.",
+                        extra={"model": fallback_model},
+                    )
+            return None, last_fallback_error
         return None, error_detail
     except APIConnectionError as exc:
         error_detail = f"Groq API connection error for model {model}: {str(exc)[:500]}"
@@ -440,7 +451,7 @@ def get_saathi_reply_with_source(message: str) -> Tuple[str, str, str, str]:
     if settings and not settings.ai_enabled:
         return settings.fallback_reply, "ai_disabled", "", "AI is disabled in Saathi Settings."
 
-    model = os.getenv("GROQ_MODEL", STABLE_GROQ_MODEL)
+    model = _groq_model_from_env()
     if not os.getenv("GROQ_API_KEY"):
         fallback_reply = settings.fallback_reply if settings else (
             "I can help with clinic information and simple general health guidance. "

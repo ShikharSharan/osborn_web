@@ -6,9 +6,11 @@ from . import views
 urlpatterns = [
     path("", views.home, name="home"),
     path("about", views.about, name="about"),
+    path("services", views.services, name="services"),
     path("contact", views.contact, name="contact"),
     path("providers", views.providers, name="providers"),
     path("appointment", views.appointment, name="appointment"),
+    path("api/appointments/availability", views.appointment_availability, name="appointment_availability"),
     path("pharmacy", views.pharmacy, name="pharmacy"),
     path("pharmacy/order", views.pharmacy_order, name="pharmacy_order"),
     path("pathology", views.pathology, name="pathology"),
