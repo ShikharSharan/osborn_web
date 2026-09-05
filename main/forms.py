@@ -11,12 +11,15 @@ class AppointmentForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = ['name', 'phone', 'email', 'clinic', 'preferred_date', 'service', 'message']
+        fields = ['name', 'phone', 'email', 'clinic', 'preferred_date', 'preferred_time', 'slot_id', 'service', 'message']
         widgets = {
             'preferred_date': forms.DateInput(attrs={'type': 'date'}),
-            'message': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Any additional information or concerns...'}),
-            'phone': forms.TextInput(attrs={'placeholder': '+91 XXXXX XXXXX'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Optional: name@example.com'}),
+            'preferred_time': forms.TimeInput(attrs={'type': 'time'}),
+            'slot_id': forms.HiddenInput(),
+            'name': forms.TextInput(attrs={'autocomplete': 'name', 'autofocus': True}),
+            'message': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Optional: additional information or concerns...'}),
+            'phone': forms.TextInput(attrs={'type': 'tel', 'autocomplete': 'tel', 'inputmode': 'tel', 'placeholder': '+91 XXXXX XXXXX'}),
+            'email': forms.EmailInput(attrs={'autocomplete': 'email', 'placeholder': 'Optional: name@example.com'}),
         }
         labels = {
             'preferred_date': 'Preferred Date',

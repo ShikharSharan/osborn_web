@@ -59,8 +59,12 @@ class Appointment(models.Model):
     phone = models.CharField(max_length=15)
     clinic = models.ForeignKey(Clinic, on_delete=models.PROTECT, related_name='appointments')
     preferred_date = models.DateField()
+    preferred_time = models.TimeField(default='09:00')
+    slot_id = models.CharField(max_length=120, blank=True)
     service = models.CharField(max_length=32, choices=SERVICE_CHOICES, default='consultation')
     message = models.TextField(blank=True)
+    external_id = models.CharField(max_length=120, blank=True)
+    meeting_url = models.URLField(max_length=1000, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, default='pending',
                             choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled')])

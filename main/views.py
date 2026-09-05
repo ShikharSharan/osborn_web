@@ -1,11 +1,13 @@
 import json
+from datetime import date
 
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from .forms import AppointmentForm, ContactForm, PathologyBookingForm, PharmacyOrderForm
+from .integrations import IntegrationError, book_with_pms, get_available_slots, pms_is_configured
 from .models import Clinic, SaathiChatLog
 from .saathi import PAYLOAD_TOO_LARGE_REPLY, get_saathi_reply_with_source
 
@@ -107,6 +109,10 @@ def about(request):
     return render(request, "about.html")
 
 
+def services(request):
+    return render(request, "services.html")
+
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -131,10 +137,24 @@ def appointment(request):
         form = AppointmentForm(request.POST)
         if form.is_valid():
             appointment = form.save()
+            booking = None
+            try:
+                booking = book_with_pms(appointment)
+            except IntegrationError:
+                messages.warning(
+                    request,
+                    "Your request was saved locally, but the clinic scheduling system is temporarily unavailable. We will contact you to confirm.",
+                )
+            if booking:
+                appointment.external_id = booking['external_id']
+                appointment.meeting_url = booking['meeting_url']
+                appointment.status = 'confirmed' if booking['external_id'] else 'pending'
+                appointment.save(update_fields=['external_id', 'meeting_url', 'status'])
             messages.success(request,
-                f"Thank you, {appointment.name}! Your appointment request for {appointment.get_service_display()} "
-                f"at {appointment.clinic.name} "
-                f"on {appointment.preferred_date} has been received. We'll contact you soon at {appointment.phone}.")
+                f"Thank you, {appointment.name}! Your appointment for {appointment.get_service_display()} "
+                f"at {appointment.clinic.name} on {appointment.preferred_date} at {appointment.preferred_time} "
+                f"has been {'confirmed' if booking and booking['external_id'] else 'received'}."
+            )
             return redirect('appointment')
     else:
         initial = {}
@@ -150,6 +170,31 @@ def appointment(request):
         form = AppointmentForm(initial=initial)
 
     return render(request, 'appointment.html', {'form': form})
+
+
+@require_GET
+def appointment_availability(request):
+    clinic = Clinic.objects.filter(
+        slug=request.GET.get('clinic'),
+        is_active=True,
+        offers_consultation=True,
+    ).first()
+    appointment_date = request.GET.get('date')
+    service = request.GET.get('service')
+    if not clinic or not appointment_date or not service:
+        return JsonResponse({'error': 'Clinic, date, and service are required.'}, status=400)
+    try:
+        requested_date = date.fromisoformat(appointment_date)
+    except ValueError:
+        return JsonResponse({'error': 'Use a valid appointment date.'}, status=400)
+
+    if not pms_is_configured():
+        return JsonResponse({'configured': False, 'slots': []})
+    try:
+        slots = get_available_slots(clinic, requested_date, service)
+    except IntegrationError:
+        return JsonResponse({'error': 'Scheduling is temporarily unavailable.'}, status=503)
+    return JsonResponse({'configured': True, 'slots': slots})
 
 
 def pharmacy(request):

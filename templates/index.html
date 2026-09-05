@@ -1,73 +1,68 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<section class="hero">
+<section class="hero home-hero">
+    <div class="home-hero-media">
+        <img src="{% static 'WhatsApp Image 2026-08-30 at 00.19.07.jpeg' %}" alt="Osborn Healthcare Centre entrance" width="1200" height="800" loading="eager" decoding="async">
+    </div>
     <div class="hero-copy">
-        <p class="hero-kicker">Gorakhpur kidney care and internal medicine</p>
-        <h1>Care that listens. Health that lasts.</h1>
-        <p class="hero-subtitle">Expert kidney, diabetes, blood pressure, and internal medicine care for you and your family.</p>
+        <p class="hero-kicker">Osborn Healthcare Centre</p>
+        <h1>Comprehensive Medical, Kidney &amp; Critical Care</h1>
+        <p class="hero-subtitle">24×7 emergency, ICU, emergency dialysis, diagnostics, and coordinated care for patients and families in Gorakhpur and surrounding areas.</p>
         <div class="hero-actions">
             <a href="{% url 'appointment' %}" class="btn-primary">Book an appointment</a>
-            <a href="tel:+919760901297" class="btn-secondary">Call the clinic</a>
+            <a href="{% url 'services' %}" class="btn-secondary">Explore Services</a>
         </div>
-        <div class="hero-hours">
-            <span><strong>Morning</strong>8-10 AM</span>
-            <span><strong>Evening</strong>3-8 PM</span>
-            <span><strong>Closed</strong>Thursday</span>
-        </div>
-    </div>
-    <div class="hero-media">
-        <div class="hero-photo" role="img" aria-label="Doctor consultation at Osborn Healthcare"></div>
-        <div class="hero-note">Patient-first care · Clear guidance at every step</div>
     </div>
 </section>
 
 <section class="quick-actions-section">
     <a href="{% url 'appointment' %}" class="action-card">
         <span>01</span>
-        <strong>Consult a doctor</strong>
-        <em>Book a clinic visit</em>
+        <strong>Medical consultation</strong>
+        <em>General Medicine and specialist care</em>
     </a>
     <a href="{% url 'pathology_booking' %}" class="action-card">
         <span>02</span>
-        <strong>Book a lab test</strong>
-        <em>Pathology and home collection</em>
+        <strong>Diagnostics</strong>
+        <em>Pathology and health packages</em>
     </a>
-    <a href="{% url 'pharmacy_order' %}" class="action-card">
+    <a href="{% url 'services' %}" class="action-card">
         <span>03</span>
-        <strong>Order medicines</strong>
-        <em>Pharmacy assistance</em>
+        <strong>Emergency &amp; critical care</strong>
+        <em>Assessment, stabilization and referral</em>
     </a>
 </section>
 
 <section class="care-section">
     <div class="section-header">
         <p class="section-kicker">Care areas</p>
-        <h2>Simple care for everyday and long-term health needs</h2>
-        <p>Plain-language guidance for kidney health, sugar, blood pressure, fever, thyroid, and preventive checkups.</p>
+        <h2>Essential care under one roof</h2>
+        <p>Medical, kidney, emergency, critical-care and diagnostic services for timely evaluation, treatment and follow-up.</p>
     </div>
     <div class="care-grid">
         <article class="care-card">
+            <span>ICU</span>
+            <h3>Critical Care</h3>
+            <p>Close observation, stabilization and critical medical support for seriously ill patients.</p>
+        </article>
+        <article class="care-card">
+            <span>24×7</span>
+            <h3>Emergency Care</h3>
+            <p>Prompt assessment for acute medical, breathing, blood-pressure, blood-sugar and kidney-related emergencies.</p>
+        </article>
+        <article class="care-card">
             <span>Kidney</span>
-            <h3>Kidney Care</h3>
-            <p>CKD guidance, kidney function evaluation, urine protein checks, and long-term support.</p>
+            <h3>Dialysis &amp; Kidney Care</h3>
+            <p>CKD, acute kidney injury, electrolyte disorders, dialysis care and kidney-protection planning.</p>
         </article>
         <article class="care-card">
-            <span>BP</span>
-            <h3>Blood Pressure Care</h3>
-            <p>Evaluation and hypertension management with clear follow-up advice.</p>
-        </article>
-        <article class="care-card">
-            <span>Sugar</span>
-            <h3>Diabetes Care</h3>
-            <p>Monitoring, treatment planning, lifestyle guidance, and family education.</p>
-        </article>
-        <article class="care-card">
-            <span>General</span>
-            <h3>Everyday Medicine</h3>
-            <p>Fever, infection, thyroid, lifestyle disorders, and preventive health checkups.</p>
+            <span>Lab</span>
+            <h3>Diagnostics</h3>
+            <p>Pathology, X-Ray, 2D Echo and ECG to support accurate diagnosis and treatment decisions.</p>
         </article>
     </div>
 </section>
@@ -87,47 +82,46 @@
 
 <section class="why-choose-us trust-band">
     <div class="section-header">
-        <p class="section-kicker">Why patients choose us</p>
-        <h2>Trust, clarity, and follow-up care</h2>
+        <p class="section-kicker">Why choose Osborn Healthcare Centre?</p>
+        <h2>Expertise you can trust. Care you can count on.</h2>
+        <p>We focus on timely, ethical and patient-centred medical care, with essential healthcare services available under one roof.</p>
     </div>
     <div class="cards">
-        <div class="card trust-card">
-            <span>01</span>
-            <h3>Evidence-based care</h3>
-            <p>Treatment protocols are guided by modern medical recommendations and patient safety standards.</p>
-        </div>
-        <div class="card trust-card">
-            <span>02</span>
-            <h3>Personal attention</h3>
-            <p>Every patient receives time, counselling, and long-term disease management support.</p>
-        </div>
-        <div class="card trust-card">
-            <span>03</span>
-            <h3>Transparent practice</h3>
-            <p>Honest consultation, rational treatment, and compassionate healthcare delivery.</p>
-        </div>
+        <div class="card trust-card"><span>01</span><h3>Experienced Medical &amp; Kidney Care</h3><p>Care led by Dr. Deepak Chandra Srivastava, MD Medicine, Fellowship in Nephrology, with a focus on General Medicine and kidney-related conditions.</p></div>
+        <div class="card trust-card"><span>02</span><h3>Comprehensive Care Under One Roof</h3><p>From consultation and diagnosis to emergency care, critical care and dialysis, we aim to simplify the healthcare journey.</p></div>
+        <div class="card trust-card"><span>03</span><h3>24×7 Emergency &amp; Critical Care</h3><p>Timely medical attention for urgent assessment, stabilization and critical-care support through ICU and emergency services.</p></div>
+        <div class="card trust-card"><span>04</span><h3>Emergency Dialysis Support</h3><p>Emergency dialysis support for appropriate cases of acute kidney injury and serious kidney-related complications.</p></div>
+        <div class="card trust-card"><span>05</span><h3>Essential Diagnostic Facilities</h3><p>Convenient access to Pathology, X-Ray, 2D Echo and ECG to support timely diagnosis and treatment decisions.</p></div>
+        <div class="card trust-card"><span>06</span><h3>Chronic Disease Management</h3><p>Structured care for diabetes, hypertension, kidney disease and other internal medicine problems.</p></div>
+        <div class="card trust-card"><span>07</span><h3>Patient-Centred Approach</h3><p>We listen carefully, explain conditions and treatment options clearly, and involve patients and families in healthcare decisions.</p></div>
+        <div class="card trust-card"><span>08</span><h3>Continuity of Care</h3><p>We emphasize appropriate follow-up, monitoring and coordination of care throughout the treatment journey.</p></div>
     </div>
 </section>
 
-<section class="services-overview">
-    <h2>Best Healthcare Services in Gorakhpur</h2>
-    <p class="section-intro">Osborn Healthcare provides specialized medical consultation and chronic disease management for families seeking reliable care.</p>
+<section class="commitment-band">
+    <p class="section-kicker">Our commitment</p>
+    <h2>Right Care. Right Diagnosis. Right Time.</h2>
+    <p>Our aim is to provide dependable medical care with clinical responsibility, compassion and respect for every patient.</p>
+</section>
+
+<section class="services-overview" id="services">
+    <h2>Comprehensive Healthcare Services in Gorakhpur</h2>
+    <p class="section-intro">From diagnosis through treatment and follow-up, our services support medical, kidney and critical-care needs in one place.</p>
     <ul class="service-list">
-        <li>Kidney Disease & Nephrology Care</li>
-        <li>High Blood Pressure (Hypertension) Treatment</li>
-        <li>Diabetes Management</li>
-        <li>Fever & Infection Treatment</li>
-        <li>Thyroid & Lifestyle Disorders</li>
-        <li>Chronic Disease Care</li>
-        <li>Preventive Health Checkups</li>
-        <li>General Physician Consultation</li>
-        <li>Internal Medicine Services</li>
+        <li>24×7 Emergency Care</li>
+        <li>ICU &amp; Critical Care</li>
+        <li>Emergency Dialysis</li>
+        <li>Kidney &amp; Dialysis Care</li>
+        <li>General Medicine</li>
+        <li>Diabetes &amp; Hypertension Care</li>
+        <li>Pathology Laboratory</li>
+        <li>X-Ray, 2D Echo &amp; ECG</li>
     </ul>
 </section>
 
 <section class="services-overview">
-    <h2>Advanced Kidney & Hypertension Care</h2>
-    <p class="section-intro">Our care focuses on early detection, accurate diagnosis, and long-term kidney preservation using internationally accepted medical guidelines.</p>
+    <h2>Kidney, Diabetes &amp; Hypertension Care</h2>
+    <p class="section-intro">Structured care focused on reducing complications, protecting kidney health, and supporting long-term monitoring.</p>
     <ul class="service-list">
         <li>Chronic Kidney Disease (CKD)</li>
         <li>Proteinuria</li>
@@ -135,13 +129,13 @@
         <li>Diabetic Kidney Disease</li>
         <li>Electrolyte Disorders</li>
         <li>Creatinine & Kidney Function Evaluation</li>
-        <li>Dialysis Counselling & Kidney Protection</li>
+        <li>Dialysis Care &amp; Kidney Protection</li>
     </ul>
 </section>
 
-<section class="our-clinics">
+<section class="our-clinics" id="locations">
     <h2>Our Clinics</h2>
-    <p class="section-intro">Visit the branch most convenient for consultation, chronic disease care, pharmacy support, and pathology services.</p>
+    <p class="section-intro">Visit the branch most convenient for consultation, diagnostics, chronic disease care and support services.</p>
     <div class="clinics-grid">
         {% for clinic in clinics %}
         <article class="clinic-card">

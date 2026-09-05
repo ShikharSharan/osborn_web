@@ -12,37 +12,47 @@
     <meta property="og:type" content="website" />
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Osborn Healthcare - {% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}?v=8" />
-    <link rel="icon" type="image/x-icon" href="{% static 'Orborn logo.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="icon" type="image/jpeg" href="{% static 'osborn-logo.jpeg' %}">
 </head>
 <body>
-    <div class="announcement-bar">
-        <div class="container announcement-inner">
-            <span>Consultations in Gorakhpur · 8-10 AM & 3-8 PM · Thursday Closed</span>
-            <a href="tel:+919760901297">Call +91 97609 01297</a>
-        </div>
-    </div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header">
-        <div class="container header-inner">
-            <a href="{% url 'home' %}" class="site-brand">
-                <img src="{% static 'Orborn logo.png' %}" alt="Osborn Healthcare Logo">
-                <span>Osborn Healthcare</span>
-            </a>
-            <button class="menu-toggle" type="button" aria-label="Toggle menu" aria-controls="primary-nav" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-            <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation">
-                <a href="{% url 'home' %}">Home</a>
-                <a href="{% url 'pathology' %}">Our Care</a>
-                <a href="{% url 'providers' %}">Doctor</a>
-                <a href="{% url 'pharmacy' %}">Patient Services</a>
-                <a href="{% url 'resources' %}">Resources</a>
-                <a href="{% url 'contact' %}">Contact</a>
-            </nav>
-            <a href="{% url 'appointment' %}" class="header-cta">Book Appointment</a>
+        <div class="header-top">
+            <div class="container header-top-inner">
+                <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="primary-nav" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="{% url 'home' %}" class="site-brand">
+                    <img src="{% static 'osborn-logo.jpeg' %}" alt="Osborn Healthcare Logo" width="152" height="74">
+                    <span>Osborn Healthcare</span>
+                </a>
+                <a href="{% url 'appointment' %}" class="header-cta">Book Appointment</a>
+            </div>
+        </div>
+        <div class="header-navigation">
+            <div class="container header-inner">
+                <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation">
+                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'about' %}">About Us</a>
+                    <a href="{% url 'services' %}">Our Services</a>
+                    <a href="{% url 'pathology' %}">Pathology</a>
+                    <a href="{% url 'pharmacy' %}">Pharmacy</a>
+                    <a href="{% url 'providers' %}">Doctors</a>
+                    <a href="{% url 'resources' %}">Resources</a>
+                    <a href="{% url 'home' %}#locations">Locations</a>
+                </nav>
+                <form class="header-search" role="search" data-site-search>
+                    <label class="saathi-sr-only" for="site-search-input">Search the site</label>
+                    <input id="site-search-input" type="search" name="q" placeholder="Search the site" autocomplete="off">
+                    <button type="submit" aria-label="Search the site">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
         </div>
     </header>
-    <main>
+    <main id="main-content" tabindex="-1">
         <div class="container">
             {% block content %}{% endblock %}
         </div>
@@ -55,7 +65,7 @@
     <footer>
         <div class="container footer-content">
             <p>© 2026 Osborn Healthcare. All rights reserved.</p>
-            <p>Internal Medicine, Kidney Care, Hypertension, Diabetes & Preventive Healthcare | +91 97609 01297</p>
+            <p>Comprehensive Medical &amp; Kidney Care | 24×7 Emergency · ICU · Emergency Dialysis · Pathology · X-Ray · 2D Echo</p>
         </div>
     </footer>
     {% if messages %}
@@ -99,8 +109,8 @@
 	            <p class="saathi-disclaimer">Osborn Saathi answers one message at a time. It is informational, not a substitute for medical diagnosis or emergency care. Avoid sharing sensitive personal details; messages may be processed by an AI provider.</p>
 	        </section>
     </div>
-    <script src="{% static 'osborn-saathi.js' %}"></script>
-    <script src="{% static 'service-forms.js' %}?v=2"></script>
+    <script src="{% static 'osborn-saathi.js' %}" defer></script>
+    <script src="{% static 'service-forms.js' %}" defer></script>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",

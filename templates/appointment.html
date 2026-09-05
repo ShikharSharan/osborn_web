@@ -4,7 +4,7 @@
 <h1>Book an Appointment</h1>
 <p class="appointment-intro">Schedule your visit for Internal Medicine, Kidney Care, Hypertension, Diabetes, chronic disease management, or Preventive Healthcare. Choose the clinic branch and service you need, and we will contact you to confirm.</p>
 
-<form method="post" class="appointment-form">
+<form method="post" class="appointment-form" data-availability-url="{% url 'appointment_availability' %}">
   {% csrf_token %}
   <div class="form-group">
     {{ form.name.label_tag }}
@@ -45,6 +45,17 @@
         <div class="error">{{ form.preferred_date.errors.0 }}</div>
     {% endif %}
   </div>
+
+  <div class="form-group">
+    {{ form.preferred_time.label_tag }}
+    {{ form.preferred_time }}
+    <p class="field-help" data-slot-status aria-live="polite">Choose a clinic and date to check live availability.</p>
+    {% if form.preferred_time.errors %}
+        <div class="error">{{ form.preferred_time.errors.0 }}</div>
+    {% endif %}
+  </div>
+
+  {{ form.slot_id }}
 
   <div class="form-group">
     {{ form.service.label_tag }}

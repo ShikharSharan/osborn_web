@@ -132,6 +132,24 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+USE_MANIFEST_STATICFILES = os.getenv('USE_MANIFEST_STATICFILES', 'False').lower() == 'true'
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': (
+            'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+            if USE_MANIFEST_STATICFILES
+            else 'django.contrib.staticfiles.storage.StaticFilesStorage'
+        ),
+    },
+}
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Clinical integration settings. Keep credentials in the deployment environment.
+PMS_API_BASE_URL = os.getenv('PMS_API_BASE_URL', '').strip()
+PMS_API_TOKEN = os.getenv('PMS_API_TOKEN', '').strip()
+PMS_API_TIMEOUT = int(os.getenv('PMS_API_TIMEOUT', '8'))
+PMS_AVAILABILITY_PATH = os.getenv('PMS_AVAILABILITY_PATH', '/api/appointments/availability')
+PMS_BOOKING_PATH = os.getenv('PMS_BOOKING_PATH', '/api/appointments/book')
