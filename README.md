@@ -42,6 +42,7 @@ PMS_API_TOKEN=replace-with-a-secret-token
 PMS_API_TIMEOUT=8
 PMS_AVAILABILITY_PATH=/api/appointments/availability
 PMS_BOOKING_PATH=/api/appointments/book
+# Production defaults to hashed static files when DEBUG=False.
 USE_MANIFEST_STATICFILES=True
 ```
 

@@ -138,7 +138,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-USE_MANIFEST_STATICFILES = os.getenv('USE_MANIFEST_STATICFILES', 'False').lower() == 'true'
+USE_MANIFEST_STATICFILES = os.getenv(
+    'USE_MANIFEST_STATICFILES',
+    'True' if not DEBUG else 'False',
+).lower() == 'true'
 STORAGES = {
     'staticfiles': {
         'BACKEND': (
