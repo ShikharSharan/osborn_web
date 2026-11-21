@@ -140,6 +140,12 @@ h1 em, h2 em { color: var(--teal); font-style: italic; }
 .facility-list h3 { font-family: var(--heading); font-size: clamp(1.65rem,2.7vw,2.5rem); font-weight: 400; letter-spacing: -.045em; margin: 0; }
 .facility-list p { font-size: .8rem; line-height: 1.6; margin: 0; }
 .reviews-section { background: var(--mist); }
+.reviews-google-cta { align-items: center; background: var(--teal-deep); color: white; display: grid; gap: 28px; grid-template-columns: minmax(118px,.42fr) minmax(0,1fr) auto; margin-bottom: 18px; padding: 30px 36px; }
+.review-stars-mark { color: #f4c34a; font-size: 1.16rem; letter-spacing: .12em; white-space: nowrap; }
+.reviews-google-label { color: #bfe6d9; font-size: .66rem; font-weight: 850; letter-spacing: .14em; margin: 0 0 9px; text-transform: uppercase; }
+.reviews-google-cta h3 { font-family: var(--heading); font-size: clamp(1.55rem,2.4vw,2.3rem); font-weight: 400; letter-spacing: -.04em; line-height: 1.08; margin: 0; }
+.reviews-google-cta div > p:not(.reviews-google-label) { color: #cfe2dd; font-size: .82rem; line-height: 1.6; margin: 9px 0 0; max-width: 520px; }
+.reviews-google-cta .button { white-space: nowrap; }
 .reviews-grid { display: grid; grid-template-columns: 1fr 1fr .62fr; }
 .review-card { background: white; margin: 0; min-height: 330px; padding: 36px; }
 .accent-review { background: var(--cream); }
@@ -186,6 +192,8 @@ h1 em, h2 em { color: var(--teal); font-style: italic; }
   .primary-location { grid-column: 1 / -1; }
   .reviews-grid { grid-template-columns: 1fr 1fr; }
   .review-note { min-height: 220px; }
+  .reviews-google-cta { grid-template-columns: auto 1fr; }
+  .reviews-google-cta .button { grid-column: 2; justify-self: start; }
   .resource-section, .contact-section { gap: 48px; }
   .site-footer { grid-template-areas: "brand copy" "links links" "legal legal"; grid-template-columns: 1fr 1fr; }
 }
@@ -228,6 +236,8 @@ h1 em, h2 em { color: var(--teal); font-style: italic; }
   .facility-list article { align-items: start; grid-template-columns: 48px 1fr; }
   .facility-list p { grid-column: 2; }
   .reviews-grid { grid-template-columns: 1fr; }
+  .reviews-google-cta { align-items: start; grid-template-columns: 1fr; padding: 27px; }
+  .reviews-google-cta .button { grid-column: auto; width: fit-content; }
   .review-card { min-height: 280px; }
   .review-card blockquote { margin: 34px 0; }
   .publication-card { border-left: 0; border-top: 1px solid rgba(255,255,255,.3); padding: 30px 0 0; }
