@@ -20,4 +20,5 @@ urlpatterns = [
     path("blog", views.blog, name="blog"),
     path("blog/<slug:slug>", views.blog_detail, name="blog_detail"),
     path("api/saathi-chat", views.saathi_chat, name="saathi_chat"),
+    path("<str:filename>", views.design_v1_file, name="design_v1_file"),
 ]
