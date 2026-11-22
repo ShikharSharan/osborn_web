@@ -1,8 +1,10 @@
 import json
 from datetime import date
+from pathlib import Path
 
+from django.conf import settings
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_GET, require_POST
@@ -84,6 +86,39 @@ PATIENT_REVIEWS = [
 SAATHI_RATE_LIMIT = 20
 SAATHI_RATE_WINDOW_SECONDS = 60
 
+DESIGN_V1_DIRECTORY = Path(settings.BASE_DIR) / "design-v1"
+DESIGN_V1_FILES = {
+    "index.html",
+    "services.html",
+    "doctors.html",
+    "locations.html",
+    "pathology.html",
+    "pharmacy.html",
+    "resources.html",
+    "styles.css",
+    "app.js",
+    "osborn-logo.jpeg",
+    "osborn-centre.jpeg",
+    "dr-deepak.jpeg",
+}
+
+
+def design_v1_file(request, filename):
+    """Serve the approved public design files without exposing the project filesystem."""
+    if filename not in DESIGN_V1_FILES:
+        raise Http404("Page not found")
+
+    file_path = DESIGN_V1_DIRECTORY / filename
+    if not file_path.is_file():
+        raise Http404("Page not found")
+
+    response = FileResponse(file_path.open("rb"))
+    if file_path.suffix == ".html":
+        response["Cache-Control"] = "no-cache"
+    else:
+        response["Cache-Control"] = "public, max-age=86400"
+    return response
+
 
 def _client_ip(request):
     forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
@@ -101,8 +136,7 @@ def _is_saathi_rate_limited(request):
 
 
 def home(request):
-    clinics = Clinic.objects.filter(is_active=True)
-    return render(request, "index.html", {"patient_reviews": PATIENT_REVIEWS, "clinics": clinics})
+    return design_v1_file(request, "index.html")
 
 
 def about(request):
